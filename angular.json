@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "dental-turn-frontend": {
+    "galaxy-dentalturn-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -91,10 +91,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "dental-turn-frontend:build:production"
+              "buildTarget": "galaxy-dentalturn-frontend:build:production"
             },
             "development": {
-              "buildTarget": "dental-turn-frontend:build:development"
+              "buildTarget": "galaxy-dentalturn-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
