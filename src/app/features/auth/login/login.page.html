@@ -1,0 +1,51 @@
+<div class="login-container">
+   <mat-card class="login-card">
+    <mat-card-header>
+        <div class="login-card__logo">
+            <mat-icon class="login-card__icon">dentistry</mat-icon>
+            <h1 class="login-card__title">Galaxy DentalTurn</h1>
+        </div>
+      <mat-card-subtitle>Bienvenido a Galaxy DentalTurn</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        @if (sessionExpiredMessage) {
+            <div class="alert alert--warning" role="alert" aria-live="assertive">
+                <mat-icon>warning</mat-icon>
+                <span>Tu sesión ha expirado. Por favor, inicia sesión de nuevo.</span>
+            </div>
+        }
+        <h2>Iniciar Sesión</h2>
+        <form [formGroup]="form" (ngSubmit)="submit()" noValidate>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre de usuario</mat-label>
+                <input id="userName" matInput placeholder="Nombre de usuario" formControlName="username" aria-label="Nombre de usuario" required/>
+                @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
+                    <mat-error>El nombre de usuario es obligatorio</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Contraseña</mat-label>
+                <input matInput placeholder="Contraseña" formControlName="password" [type]="hidePassword ? 'password' : 'text'"/>
+                
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'" [attr.aria-pressed]="!hidePassword">
+                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+                    <mat-error>La contraseña es obligatoria</mat-error>
+                }
+                @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+                    <mat-error>Mínimo 4 caracteres</mat-error>
+                }
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" class="login-btn full-width" [disabled]="form.invalid || loading">
+                @if (loading) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                    Iniciar Sesión
+                }
+            </button>
+        </form>
+    </mat-card-content>
+   </mat-card>  
+  
+</div>
