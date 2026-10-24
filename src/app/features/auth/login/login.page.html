@@ -1,51 +1,97 @@
-<div class="login-container">
-   <mat-card class="login-card">
-    <mat-card-header>
-        <div class="login-card__logo">
-            <mat-icon class="login-card__icon">dentistry</mat-icon>
-            <h1 class="login-card__title">Galaxy DentalTurn</h1>
-        </div>
-      <mat-card-subtitle>Bienvenido a Galaxy DentalTurn</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        @if (sessionExpiredMessage) {
-            <div class="alert alert--warning" role="alert" aria-live="assertive">
-                <mat-icon>warning</mat-icon>
-                <span>Tu sesión ha expirado. Por favor, inicia sesión de nuevo.</span>
-            </div>
+<main class="login-container">
+  <div class="login-header">
+    <span class="login-header__badge" aria-hidden="true">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="login-header__icon"
+      >
+        <path d="M22 11v1a10 10 0 1 1-9-10" />
+        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+        <line x1="9" x2="9.01" y1="9" y2="9" />
+        <line x1="15" x2="15.01" y1="9" y2="9" />
+        <path d="M16 5h6" />
+        <path d="M19 2v6" />
+      </svg>
+    </span>
+    <div class="login-header__text">
+      <h1 class="login-header__title">Panel de administración</h1>
+      <p class="login-header__subtitle">
+        Ingresa para ver y gestionar los turnos de DentalCare.
+      </p>
+    </div>
+  </div>
+
+  <div class="login-card">
+    @if (sessionExpiredMessage) {
+      <div class="alert alert--warning" role="alert" aria-live="assertive">
+        <mat-icon>warning</mat-icon>
+        <span>Tu sesión ha expirado. Por favor, inicia sesión de nuevo.</span>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" noValidate class="login-form">
+      <div class="form-item">
+        <label
+          for="userName"
+          class="form-label"
+          [class.form-label--error]="form.get('username')?.invalid && form.get('username')?.touched"
+        >
+          Email
+        </label>
+        <input
+          id="userName"
+          type="email"
+          class="form-input"
+          [class.form-input--error]="form.get('username')?.invalid && form.get('username')?.touched"
+          placeholder="admin@consultorio.local"
+          formControlName="username"
+          aria-label="Email"
+          required
+        />
+        @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
+          <p class="form-message">El email es obligatorio</p>
         }
-        <h2>Iniciar Sesión</h2>
-        <form [formGroup]="form" (ngSubmit)="submit()" noValidate>
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Nombre de usuario</mat-label>
-                <input id="userName" matInput placeholder="Nombre de usuario" formControlName="username" aria-label="Nombre de usuario" required/>
-                @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
-                    <mat-error>El nombre de usuario es obligatorio</mat-error>
-                }
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Contraseña</mat-label>
-                <input matInput placeholder="Contraseña" formControlName="password" [type]="hidePassword ? 'password' : 'text'"/>
-                
-                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'" [attr.aria-pressed]="!hidePassword">
-                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                </button>
-                @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
-                    <mat-error>La contraseña es obligatoria</mat-error>
-                }
-                @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
-                    <mat-error>Mínimo 4 caracteres</mat-error>
-                }
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" class="login-btn full-width" [disabled]="form.invalid || loading">
-                @if (loading) {
-                    <mat-spinner diameter="20"></mat-spinner>
-                } @else {
-                    Iniciar Sesión
-                }
-            </button>
-        </form>
-    </mat-card-content>
-   </mat-card>  
-  
-</div>
+      </div>
+
+      <div class="form-item">
+        <label
+          for="password"
+          class="form-label"
+          [class.form-label--error]="form.get('password')?.invalid && form.get('password')?.touched"
+        >
+          Contraseña
+        </label>
+        <input
+          id="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          class="form-input"
+          [class.form-input--error]="form.get('password')?.invalid && form.get('password')?.touched"
+          formControlName="password"
+          aria-label="Contraseña"
+        />
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <p class="form-message">La contraseña es obligatoria</p>
+        }
+        @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+          <p class="form-message">Mínimo 4 caracteres</p>
+        }
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="form.invalid || loading">
+        @if (loading) {
+          <span>Ingresando...</span>
+        } @else {
+          <span>Ingresar</span>
+        }
+      </button>
+    </form>
+  </div>
+</main>
