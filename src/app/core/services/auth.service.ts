@@ -1,6 +1,6 @@
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { computed, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiServicesFactory } from './api-service-factory';
+import { ApiServiceFactory } from './api-service-factory';
 import { isPlatformBrowser } from '@angular/common';
 import { API_ROUTES } from '../constants/api-routes.constants';
 import { LoginRequest, CurrentUser, LoginResponse, ApiResult } from '../models/auth.model';
@@ -14,12 +14,15 @@ const TOKEN_KEY = 'token';
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly factory = inject(ApiServicesFactory);
+  private readonly factory = inject(ApiServiceFactory);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   private readonly loginEndpoint = this.factory.create(API_ROUTES.AUTH.LOGIN).url;
   private readonly _currentUser = signal<CurrentUser | null>(this.loadFromSession());
+
+  readonly currentUser = this._currentUser.asReadonly();
+  readonly isLoggedIn = computed(() => this._currentUser() !== null);
 
 
   login(request: LoginRequest): Observable<CurrentUser> {
@@ -65,6 +68,7 @@ export class AuthService {
   }
 
   private setSession(user: CurrentUser): void {
+    this._currentUser.set(user);
     const storage = this.getSessionStorage();
     if (storage) {
       storage.setItem(SESSION_KEY, JSON.stringify(user));

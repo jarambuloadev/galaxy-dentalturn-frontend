@@ -1,0 +1,88 @@
+<app-page-header title="Services" description="Listado de servicios disponibles">
+  <button *appHasRole="'admin'" mat-raised-button color="primary" routerLink="/services/new">
+    <mat-icon>add</mat-icon> Nuevo producto
+  </button>
+</app-page-header>
+
+<mat-card>
+  <mat-card-content>
+
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar servicio</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input 
+        matInput
+        [formControl]="searchControl"
+        placeholder="Nombre, descripción o duración mínima..."
+        aria-label="Buscar servicio"
+        aria-live="polite"
+      />
+    </mat-form-field>
+
+    @if(loading()){
+    <div class="table-skeleton">
+      @for(i of [1,2,3,4,5]; track i)
+      {
+      <div class="skeleton-row"></div>
+      }
+    </div>
+    }
+    @else if(dataSource.data.length === 0){
+    <app-empty-state icon="inventory_2" title="No services found"
+      message="There are no services available at the moment."></app-empty-state>
+    }
+    @else {
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" aria-label="Listado de servicios">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let p">{{ p.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let p" class="description-cell">{{ p.description }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Duración mínima</th>
+          <td mat-cell *matCellDef="let p">{{ p.duracionMinima }}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button matTooltip="Ver detalle" [routerLink]="['/products', p.id]"
+              aria-label="Ver detalle del producto">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <!--<button 
+            *appHasRole="'admin'" 
+            mat-icon-button 
+            matTooltip="Editar" 
+            aria-label="Editar producto"
+            (click)="editService(p.id)">
+              <mat-icon>edit</mat-icon>
+            </button>-->
+            <!--<button 
+            *appHasRole="'admin'" 
+            mat-icon-button 
+            color="warn" 
+            matTooltip="Eliminar"
+            (click)="confirmDelete(p)"  
+            aria-label="Eliminar producto">
+              <mat-icon>delete</mat-icon>
+            </button>-->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 25]"
+      (page)="onPageChange($event)" aria-label="Paginación de servicios" />
+    }
+  </mat-card-content>
+</mat-card>

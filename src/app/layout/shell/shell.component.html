@@ -1,1 +1,20 @@
-<p>shell.component works!</p>
+<div class="shell">
+    <app-toolbar class="shell-toolbar"></app-toolbar>
+
+    <mat-sidenav-container class="shell-container">
+        <mat-sidenav 
+            #sidenav
+            class="shell-sidenav"
+            [mode]="isHandset ? 'over' : 'side'"
+            [opened]="!isHandset"
+        >
+            <app-sidenav></app-sidenav>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="shell-content">           
+            <div class="shell-main">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

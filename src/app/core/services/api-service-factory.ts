@@ -8,7 +8,7 @@ export interface EnpointConfig {
 @Injectable({
   providedIn: 'root',
 })
-export class ApiServicesFactory {
+export class ApiServiceFactory {
   private readonly baseUrl = environment.apiUrl;
 
   create(apiPath: string): EnpointConfig {

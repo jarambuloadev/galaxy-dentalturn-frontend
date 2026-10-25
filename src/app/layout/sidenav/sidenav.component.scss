@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =========================================================
+   SIDENAV
+   ========================================================= */
+
+.sidenav {
+  width: 100%;
+
+  padding: 12px 8px;
+
+  box-sizing: border-box;
+
+  background: transparent;
+}
+
+
+/* =========================================================
+   NAV ITEMS
+   ========================================================= */
+
+.sidenav a[mat-list-item] {
+  height: 38px;
+  min-height: 38px;
+
+  margin-bottom: 4px;
+
+  padding: 0 12px;
+
+  border-radius: 20px;
+
+  box-sizing: border-box;
+
+  color: var(--color-text-secondary);
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  /* Evita el estilo elevado por defecto de Material */
+  background: transparent;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.sidenav a[mat-list-item] mat-icon {
+  width: 20px;
+  height: 20px;
+
+  margin-right: 4px;
+
+  font-size: 21px;
+  line-height: 20px;
+
+  color: #718096;
+
+  transition: color 0.2s ease;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.sidenav .nav-label {
+  color: var(--color-text-secondary);
+
+  font-family: 'Inter', sans-serif;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  line-height: 38px;
+
+  transition: color 0.2s ease;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.sidenav a[mat-list-item]:hover {
+  background: var(--color-sidebar-hover);
+
+  color: var(--color-primary);
+}
+
+.sidenav a[mat-list-item]:hover mat-icon {
+  color: var(--color-primary);
+}
+
+.sidenav a[mat-list-item]:hover .nav-label {
+  color: var(--color-primary);
+}
+
+
+/* =========================================================
+   ACTIVE
+   ========================================================= */
+
+.sidenav a[mat-list-item].active-link {
+  background: var(--color-primary-soft);
+
+  color: var(--color-primary);
+}
+
+.sidenav a[mat-list-item].active-link mat-icon {
+  color: var(--color-primary);
+}
+
+.sidenav a[mat-list-item].active-link .nav-label {
+  color: var(--color-primary);
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.sidenav mat-divider {
+  margin-top: 12px;
+
+  border-color: var(--color-border-light);
+}

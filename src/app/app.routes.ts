@@ -19,10 +19,6 @@ export const routes: Routes = [
         path: '404',
         loadComponent: () => import('./features/errors/not-found/not-found').then((m)=> m.NotFound),
     },
-    {
-        path: '**',
-        loadComponent: () => import('./features/errors/not-found/not-found').then((m)=> m.NotFound),
-    },
 
     //rutas protegidas (con autenticacion)
     {
@@ -34,6 +30,12 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => 
                     import('./features/dashboard/dashboard.page').then((m)=> m.DashboardPage),
+
+            },
+            {
+                path: 'services',
+                loadComponent: () => 
+                    import('./features/services/list/services-list.page').then((m)=> m.ServicesListPage),
 
             },
             { path: '', redirectTo: 'dashboard' , pathMatch: 'full'},
