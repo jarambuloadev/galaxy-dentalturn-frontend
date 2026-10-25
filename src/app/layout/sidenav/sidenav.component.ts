@@ -25,11 +25,9 @@ export class SidenavComponent {
   protected readonly auth = inject(AuthService);
 
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'home', route: '/dashboard' },
-    { label: 'Servicios', icon: 'event', route: '/services' },
-    { label: 'Turnos', icon: 'event', route: '/appointments' },
-    { label: 'Disponibilidad', icon: 'people', route: '/patients' },      
-    //{ label: 'Usuarios', icon: 'person', route: '/users', adminOnly: true },
-    //{ label: 'Admin Panel', icon: 'admin_panel_settings', route: '/admin', adminOnly: true },
+    { label: 'Dashboard', icon: 'grid_view', route: '/dashboard' },
+    { label: 'Servicios', icon: 'medical_services', route: '/services' },
+    { label: 'Turnos', icon: 'event_available', route: '/appointments' },
+    { label: 'Disponibilidad', icon: 'schedule', route: '/patients' },
   ];
 }

@@ -1,133 +1,78 @@
 :host {
   display: block;
   width: 100%;
+  height: 100%;
+  background-color: var(--sidebar);
+  color: var(--sidebar-foreground);
 }
-
-/* =========================================================
-   SIDENAV
-   ========================================================= */
 
 .sidenav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   width: 100%;
-
-  padding: 12px 8px;
-
+  padding: 0.75rem 0.5rem !important;
   box-sizing: border-box;
-
   background: transparent;
 }
-
-
-/* =========================================================
-   NAV ITEMS
-   ========================================================= */
 
 .sidenav a[mat-list-item] {
-  height: 38px;
-  min-height: 38px;
-
-  margin-bottom: 4px;
-
-  padding: 0 12px;
-
-  border-radius: 20px;
-
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 0.75rem !important;
+  border-radius: 0.75rem !important;
   box-sizing: border-box;
+  color: color-mix(in oklab, var(--sidebar-foreground) 70%, transparent) !important;
+  background: transparent !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
 
-  color: var(--color-text-secondary);
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-
-  /* Evita el estilo elevado por defecto de Material */
-  background: transparent;
+  &::before {
+    display: none !important;
+  }
 }
-
-
-/* =========================================================
-   ICON
-   ========================================================= */
 
 .sidenav a[mat-list-item] mat-icon {
-  width: 20px;
-  height: 20px;
-
-  margin-right: 4px;
-
-  font-size: 21px;
-  line-height: 20px;
-
-  color: #718096;
-
-  transition: color 0.2s ease;
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 0.75rem !important;
+  font-size: 18px !important;
+  line-height: 18px !important;
+  color: color-mix(in oklab, var(--sidebar-foreground) 70%, transparent) !important;
+  transition: color 0.15s ease;
 }
-
-
-/* =========================================================
-   LABEL
-   ========================================================= */
 
 .sidenav .nav-label {
-  color: var(--color-text-secondary);
-
+  color: color-mix(in oklab, var(--sidebar-foreground) 75%, transparent) !important;
   font-family: 'Inter', sans-serif;
-
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 500;
-
-  line-height: 38px;
-
-  transition: color 0.2s ease;
+  line-height: 1.25rem;
+  transition: color 0.15s ease;
 }
-
-
-/* =========================================================
-   HOVER
-   ========================================================= */
 
 .sidenav a[mat-list-item]:hover {
-  background: var(--color-sidebar-hover);
-
-  color: var(--color-primary);
+  background-color: var(--sidebar-accent) !important;
+  color: var(--sidebar-foreground) !important;
 }
 
-.sidenav a[mat-list-item]:hover mat-icon {
-  color: var(--color-primary);
-}
-
+.sidenav a[mat-list-item]:hover mat-icon,
 .sidenav a[mat-list-item]:hover .nav-label {
-  color: var(--color-primary);
+  color: var(--sidebar-foreground) !important;
 }
-
-
-/* =========================================================
-   ACTIVE
-   ========================================================= */
 
 .sidenav a[mat-list-item].active-link {
-  background: var(--color-primary-soft);
-
-  color: var(--color-primary);
+  background-color: var(--sidebar-primary) !important;
+  color: var(--sidebar-primary-foreground) !important;
 }
 
-.sidenav a[mat-list-item].active-link mat-icon {
-  color: var(--color-primary);
-}
-
+.sidenav a[mat-list-item].active-link mat-icon,
 .sidenav a[mat-list-item].active-link .nav-label {
-  color: var(--color-primary);
-
-  font-weight: 600;
+  color: var(--sidebar-primary-foreground) !important;
+  font-weight: 500;
 }
-
-
-/* =========================================================
-   DIVIDER
-   ========================================================= */
 
 .sidenav mat-divider {
-  margin-top: 12px;
-
-  border-color: var(--color-border-light);
+  margin-top: 0.75rem;
+  border-color: var(--sidebar-border);
 }

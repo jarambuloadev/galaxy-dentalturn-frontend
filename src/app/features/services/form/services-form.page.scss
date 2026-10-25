@@ -1,29 +1,220 @@
-.product-form {
+.service-form-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1rem;
+  max-width: 48rem;
 }
 
-.form-row {
+.shadcn-card {
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+  box-sizing: border-box;
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.shadcn-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
 
-  @media (max-width: 599px) {
-    grid-template-columns: 1fr;
+  &:first-child {
+    padding-top: 0;
   }
 
-  mat-form-field {
-    width: 100%;
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  @media (min-width: 640px) {
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  &__hint {
+    font-size: 0.75rem;
+    line-height: 1.15rem;
+    color: var(--muted-foreground);
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
   }
 }
 
-.full-width {
-  width: 100%;
+.shadcn-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  user-select: none;
 }
 
-.form-actions {
+.shadcn-input-group {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
+  align-items: center;
+
+  .shadcn-input {
+    padding-right: 2.25rem;
+  }
+
+  &__icon {
+    position: absolute;
+    right: 0.625rem;
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 16px !important;
+    color: var(--muted-foreground);
+    pointer-events: none;
+  }
+}
+
+.shadcn-input,
+.shadcn-textarea {
+  width: 100%;
+  min-width: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--input);
+  background-color: transparent;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--foreground);
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  &:focus-visible {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+
+  &--error {
+    border-color: var(--destructive);
+
+    &:focus-visible {
+      border-color: var(--destructive);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent);
+    }
+  }
+}
+
+.shadcn-input {
+  height: 2.125rem;
+}
+
+.shadcn-textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.shadcn-error {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--destructive);
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.btn-primary {
+  display: inline-flex;
+  height: 2.125rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--primary) 85%, transparent);
+  }
+
+  &:focus-visible {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.btn-outline {
+  display: inline-flex;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+
+  &:hover {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
 }

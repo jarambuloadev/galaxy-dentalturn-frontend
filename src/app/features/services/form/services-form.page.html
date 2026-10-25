@@ -1,78 +1,109 @@
 <app-page-header [title]="title" [description]="description">
-  <a mat-button routerLink="/services">
-    <mat-icon>arrow_back</mat-icon> Cancelar
+  <a routerLink="/services" class="btn-outline">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Cancelar</span>
   </a>
 </app-page-header>
 
 @if (loadingData()) {
   <mat-progress-bar mode="indeterminate" />
 } @else {
-  <mat-card>
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="service-form">
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Nombre del servicio</mat-label>
-            <input matInput formControlName="name" aria-label="Nombre del servicio" />
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="service-form-wrapper">
+    <div class="shadcn-card">
+      <div class="shadcn-card__rows">
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Nombre del servicio</p>
+            <span class="shadcn-row__hint">Nombre visible para los pacientes al reservar turno.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="service-name" class="shadcn-label">Nombre</label>
+            <input
+              id="service-name"
+              type="text"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('name')?.invalid && form.get('name')?.touched"
+              formControlName="name"
+              placeholder="Ej. Limpieza Dental"
+              aria-label="Nombre del servicio"
+            />
             @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
-              <mat-error>El nombre es requerido</mat-error>
+              <p class="shadcn-error">El nombre es requerido</p>
             }
             @if (form.get('name')?.hasError('maxlength') && form.get('name')?.touched) {
-              <mat-error>Máximo 100 caracteres</mat-error>
+              <p class="shadcn-error">Máximo 100 caracteres</p>
             }
-          </mat-form-field>
+          </div>
+        </div>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Duración mínima (minutos)</mat-label>
-            <mat-icon matPrefix>schedule</mat-icon>
-            <input
-              matInput
-              type="number"
-              formControlName="durationMin"
-              step="5"
-              min="5"
-              aria-label="Duración mínima en minutos"
-            />
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Duración mínima</p>
+            <span class="shadcn-row__hint">Tiempo estimado de atención en minutos para el turno.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="service-duration" class="shadcn-label">Minutos</label>
+            <div class="shadcn-input-group">
+              <input
+                id="service-duration"
+                type="number"
+                class="shadcn-input"
+                [class.shadcn-input--error]="form.get('durationMin')?.invalid && form.get('durationMin')?.touched"
+                formControlName="durationMin"
+                step="5"
+                min="5"
+                aria-label="Duración mínima en minutos"
+              />
+              <mat-icon class="shadcn-input-group__icon">schedule</mat-icon>
+            </div>
             @if (form.get('durationMin')?.hasError('required') && form.get('durationMin')?.touched) {
-              <mat-error>La duración mínima es requerida</mat-error>
+              <p class="shadcn-error">La duración mínima es requerida</p>
             }
             @if (form.get('durationMin')?.hasError('min') && form.get('durationMin')?.touched) {
-              <mat-error>La duración mínima debe ser al menos 5 minutos</mat-error>
+              <p class="shadcn-error">La duración mínima debe ser al menos 5 minutos</p>
             }
-          </mat-form-field>
+          </div>
         </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Descripción</mat-label>
-          <textarea
-            matInput
-            formControlName="description"
-            rows="3"
-            aria-label="Descripción del servicio"
-          ></textarea>
-          @if (form.get('description')?.hasError('required') && form.get('description')?.touched) {
-            <mat-error>La descripción es requerida</mat-error>
-          }
-          @if (form.get('description')?.hasError('maxlength') && form.get('description')?.touched) {
-            <mat-error>Máximo 250 caracteres</mat-error>
-          }
-        </mat-form-field>
-
-        <div class="form-actions">
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid || loading()"
-          >
-            @if (loading()) {
-              <mat-spinner diameter="18" />
-            } @else {
-              {{ isEditMode ? 'Actualizar Servicio' : 'Crear Servicio' }}
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Descripción</p>
+            <span class="shadcn-row__hint">Detalle breve de lo que incluye este servicio odontológico.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="service-description" class="shadcn-label">Detalle del servicio</label>
+            <textarea
+              id="service-description"
+              class="shadcn-textarea"
+              [class.shadcn-input--error]="form.get('description')?.invalid && form.get('description')?.touched"
+              formControlName="description"
+              rows="3"
+              placeholder="Describe brevemente el servicio..."
+              aria-label="Descripción del servicio"
+            ></textarea>
+            @if (form.get('description')?.hasError('required') && form.get('description')?.touched) {
+              <p class="shadcn-error">La descripción es requerida</p>
             }
-          </button>
+            @if (form.get('description')?.hasError('maxlength') && form.get('description')?.touched) {
+              <p class="shadcn-error">Máximo 250 caracteres</p>
+            }
+          </div>
         </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="form.invalid || loading()"
+      >
+        @if (loading()) {
+          <span>Guardando...</span>
+        } @else {
+          <span>{{ isEditMode ? 'Guardar servicio' : 'Crear servicio' }}</span>
+        }
+      </button>
+    </div>
+  </form>
 }
