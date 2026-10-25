@@ -1,0 +1,126 @@
+<app-page-header title="Odontólogos" description="Listado de profesionales y especialidades que atienden en el consultorio">
+  <button *appHasRole="'admin'" mat-raised-button color="primary" routerLink="/practitioners/new">
+    <mat-icon>add</mat-icon> Nuevo odontólogo
+  </button>
+</app-page-header>
+
+<mat-card>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar odontólogo</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        [formControl]="searchControl"
+        placeholder="Nombre o especialidad..."
+        aria-label="Buscar odontólogo"
+        aria-live="polite"
+      />
+    </mat-form-field>
+
+    @if (loading()) {
+      <div class="table-skeleton">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <div class="skeleton-row"></div>
+        }
+      </div>
+    } @else if (dataSource.data.length === 0) {
+      <app-empty-state
+        icon="badge"
+        title="No se encontraron odontólogos"
+        message="No hay odontólogos registrados en este momento."
+      ></app-empty-state>
+    } @else {
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" aria-label="Listado de odontólogos">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let p">
+              <span class="id-badge">#{{ p.id }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Odontólogo</th>
+            <td mat-cell *matCellDef="let p" class="name-cell">{{ p.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="services">
+            <th mat-header-cell *matHeaderCellDef>Servicios que atiende</th>
+            <td mat-cell *matCellDef="let p">
+              @if (p.services && p.services.length > 0) {
+                <div class="service-pills">
+                  @for (s of p.services; track s.id) {
+                    <span class="service-pill">{{ s.name }}</span>
+                  }
+                </div>
+              } @else {
+                <span class="text-muted">Sin servicios asignados</span>
+              }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let p">
+              @if (p.active) {
+                <span class="status-pill status-pill--active">Activo</span>
+              } @else {
+                <span class="status-pill status-pill--inactive">Inactivo</span>
+              }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let p">
+              <div class="action-buttons">
+                <button
+                  mat-icon-button
+                  class="action-btn action-btn--view"
+                  matTooltip="Ver detalle"
+                  [routerLink]="['/practitioners', p.id]"
+                  aria-label="Ver detalle del odontólogo"
+                >
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button
+                  *appHasRole="'admin'"
+                  mat-icon-button
+                  class="action-btn action-btn--edit"
+                  matTooltip="Editar"
+                  aria-label="Editar odontólogo"
+                  (click)="editPractitioner(p.id)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  *appHasRole="'admin'"
+                  mat-icon-button
+                  class="action-btn action-btn--delete"
+                  matTooltip="Eliminar"
+                  (click)="confirmDelete(p)"
+                  aria-label="Eliminar odontólogo"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25]"
+        (page)="onPageChange($event)"
+        aria-label="Paginación de odontólogos"
+      />
+    }
+  </mat-card-content>
+</mat-card>

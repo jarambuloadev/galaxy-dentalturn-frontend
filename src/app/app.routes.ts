@@ -39,6 +39,11 @@ export const routes: Routes = [
 
             },
             {
+                path: 'practitioners',
+                loadChildren: () =>
+                    import('./features/practitioners/practitioners.routes').then((m) => m.PRACTITIONERS_ROUTES),
+            },
+            {
                 path: 'availability',
                 loadComponent: () =>
                     import('./features/availability/availability.page').then((m) => m.AvailabilityPage),

@@ -27,6 +27,7 @@ export class SidenavComponent {
   navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'grid_view', route: '/dashboard' },
     { label: 'Servicios', icon: 'medical_services', route: '/services' },
+    { label: 'Odontólogos', icon: 'badge', route: '/practitioners' },
     { label: 'Turnos', icon: 'event_available', route: '/appointments' },
     { label: 'Disponibilidad', icon: 'schedule', route: '/availability' },
   ];

@@ -1,0 +1,109 @@
+<app-page-header [title]="title" [description]="description">
+  <a routerLink="/practitioners" class="btn-outline">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Cancelar</span>
+  </a>
+</app-page-header>
+
+@if (loadingData()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="practitioner-form-wrapper">
+    <div class="shadcn-card">
+      <div class="shadcn-card__rows">
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Nombre del profesional</p>
+            <span class="shadcn-row__hint">Nombre completo visible al asignar y gestionar turnos.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="practitioner-name" class="shadcn-label">Nombre completo</label>
+            <input
+              id="practitioner-name"
+              type="text"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('name')?.invalid && form.get('name')?.touched"
+              formControlName="name"
+              placeholder="Ej. Dr. Carlos Ramírez"
+              aria-label="Nombre del odontólogo"
+            />
+            @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+              <p class="shadcn-error">El nombre es requerido</p>
+            }
+            @if (form.get('name')?.hasError('maxlength') && form.get('name')?.touched) {
+              <p class="shadcn-error">Máximo 100 caracteres</p>
+            }
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Estado de atención</p>
+            <span class="shadcn-row__hint">Indica si el odontólogo está activo para recibir reservas.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <div class="switch-row">
+              <button
+                type="button"
+                role="switch"
+                class="shadcn-switch"
+                [class.shadcn-switch--checked]="isActive()"
+                [attr.aria-checked]="isActive()"
+                aria-label="Estado activo del odontólogo"
+                (click)="toggleActive()"
+              >
+                <span class="shadcn-switch__thumb"></span>
+              </button>
+              <span class="switch-row__label">
+                {{ isActive() ? 'Activo' : 'Inactivo' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Servicios que atiende</p>
+            <span class="shadcn-row__hint">Selecciona los servicios odontológicos que realiza este profesional.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <span class="shadcn-label">Especialidades disponibles</span>
+            @if (availableServices().length === 0) {
+              <p class="shadcn-row__hint">No hay servicios registrados.</p>
+            } @else {
+              <div class="services-grid">
+                @for (srv of availableServices(); track srv.id) {
+                  <button
+                    type="button"
+                    class="service-chip"
+                    [class.service-chip--selected]="isServiceSelected(srv.id)"
+                    (click)="toggleService(srv.id)"
+                  >
+                    <mat-icon class="service-chip__icon">
+                      {{ isServiceSelected(srv.id) ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span>{{ srv.name }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="form.invalid || loading()"
+      >
+        @if (loading()) {
+          <span>Guardando...</span>
+        } @else {
+          <span>{{ isEditMode ? 'Guardar odontólogo' : 'Crear odontólogo' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+}

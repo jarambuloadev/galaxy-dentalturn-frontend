@@ -9,6 +9,13 @@ export const API_ROUTES = {
     UPDATE: (id: number) => `api/services/${id}`,
     DELETE: (id: number) => `api/services/${id}`,
   },
+  PRACTITIONERS: {
+    BASE: 'api/practitioners',
+    GET_BY_ID: (id: number) => `api/practitioners/${id}`,
+    CREATE: 'api/practitioners',
+    UPDATE: (id: number) => `api/practitioners/${id}`,
+    DELETE: (id: number) => `api/practitioners/${id}`,
+  },
   BUSINESS_HOURS: {
     BASE: 'api/business-hours',
   },
