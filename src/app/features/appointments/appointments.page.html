@@ -103,7 +103,8 @@
 
       @if (hasFilters) {
         <button type="button" class="btn-clear" (click)="clearFilters()">
-          Limpiar filtros
+          <mat-icon>filter_alt_off</mat-icon>
+          <span>Limpiar filtros</span>
         </button>
       }
     </div>
@@ -111,8 +112,8 @@
     @if (appointments().length === 0) {
       <p class="empty-msg">No hay turnos que coincidan con los filtros.</p>
     } @else {
-      <div class="table-wrapper">
-        <table class="appointments-table">
+      <div class="table-container">
+        <table class="appointments-table" aria-label="Listado de turnos">
           <thead>
             <tr>
               <th>Paciente</th>
@@ -128,17 +129,27 @@
           <tbody>
             @for (appt of appointments(); track appt.id) {
               <tr>
-                <td class="font-medium">{{ appt.patientName }}</td>
-                <td class="contact-cell">
-                  <div>{{ appt.patientEmail }}</div>
-                  <div>{{ appt.patientPhone }}</div>
+                <td class="patient-cell">
+                  <span class="patient-name">{{ appt.patientName }}</span>
                 </td>
-                <td>{{ appt.serviceName }}</td>
-                <td>{{ appt.practitionerName }}</td>
-                <td>{{ appt.dateLabel }}</td>
-                <td>{{ appt.timeLabel }}</td>
+                <td class="contact-cell">
+                  <div class="contact-email">{{ appt.patientEmail }}</div>
+                  <div class="contact-phone">{{ appt.patientPhone }}</div>
+                </td>
+                <td>
+                  <span class="service-pill">{{ appt.serviceName }}</span>
+                </td>
+                <td class="practitioner-cell">{{ appt.practitionerName }}</td>
+                <td class="date-cell">{{ appt.dateLabel }}</td>
+                <td>
+                  <span class="time-pill">
+                    <mat-icon>schedule</mat-icon>
+                    {{ appt.timeLabel }}
+                  </span>
+                </td>
                 <td>
                   <span class="status-badge" [attr.data-status]="appt.status">
+                    <span class="status-dot"></span>
                     {{ getStatusLabel(appt.status) }}
                   </span>
                 </td>
@@ -147,28 +158,31 @@
                     @if (appt.status === 'PENDING') {
                       <button
                         type="button"
-                        class="btn-sm btn-sm--primary"
+                        class="btn-action btn-action--confirm"
                         (click)="updateStatus(appt, 'CONFIRMED')"
                       >
-                        Confirmar
+                        <mat-icon>check_circle</mat-icon>
+                        <span>Confirmar</span>
                       </button>
                     }
                     @if (appt.status === 'CONFIRMED') {
                       <button
                         type="button"
-                        class="btn-sm btn-sm--primary"
+                        class="btn-action btn-action--complete"
                         (click)="updateStatus(appt, 'COMPLETED')"
                       >
-                        Completar
+                        <mat-icon>task_alt</mat-icon>
+                        <span>Completar</span>
                       </button>
                     }
                     @if (appt.status === 'PENDING' || appt.status === 'CONFIRMED') {
                       <button
                         type="button"
-                        class="btn-sm btn-sm--danger"
+                        class="btn-action btn-action--cancel"
                         (click)="confirmCancel(appt)"
                       >
-                        Cancelar
+                        <mat-icon>cancel</mat-icon>
+                        <span>Cancelar</span>
                       </button>
                     }
                   </div>

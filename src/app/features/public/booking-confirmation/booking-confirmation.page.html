@@ -1,39 +1,102 @@
 <div class="confirmation-container">
-  <div class="confirmation-header">
-    <h1 class="confirmation-header__title">¡Turno reservado!</h1>
-    <p class="confirmation-header__subtitle">
+  <div class="confirmation-hero">
+    <div class="confirmation-hero__icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <span class="confirmation-hero__pill">Reserva registrada con éxito</span>
+    <h1 class="confirmation-hero__title">¡Turno reservado!</h1>
+    <p class="confirmation-hero__subtitle">
       Te esperamos en el consultorio. Guarda o anota los datos de tu turno.
     </p>
   </div>
 
   @if (!loading() && appointment()) {
-    <div class="confirmation-card">
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Paciente</span>
-        <span class="confirmation-row__val">{{ appointment()!.patientName }}</span>
+    <div class="ticket-card">
+      <div class="ticket-card__banner">
+        <div>
+          <p class="ticket-card__eyebrow">Comprobante de turno</p>
+          <p class="ticket-card__service">{{ appointment()!.serviceName }}</p>
+        </div>
+        <span class="ticket-card__code">#{{ appointment()!.id }}</span>
       </div>
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Servicio</span>
-        <span class="confirmation-row__val">{{ appointment()!.serviceName }}</span>
+
+      <div class="ticket-card__body">
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>person_outline</mat-icon>
+            </span>
+            <span class="ticket-row__label">Paciente</span>
+          </div>
+          <span class="ticket-row__val">{{ appointment()!.patientName }}</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>health_and_safety</mat-icon>
+            </span>
+            <span class="ticket-row__label">Servicio</span>
+          </div>
+          <span class="ticket-row__val">{{ appointment()!.serviceName }}</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>badge</mat-icon>
+            </span>
+            <span class="ticket-row__label">Odontólogo</span>
+          </div>
+          <span class="ticket-row__val">{{ appointment()!.practitionerName }}</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>event_available</mat-icon>
+            </span>
+            <span class="ticket-row__label">Fecha</span>
+          </div>
+          <span class="ticket-row__val">{{ formatLongDate(appointment()!.date) || appointment()!.dateLabel }}</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>schedule</mat-icon>
+            </span>
+            <span class="ticket-row__label">Horario</span>
+          </div>
+          <span class="ticket-row__time-pill">{{ appointment()!.timeLabel }} hs</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="ticket-row__left">
+            <span class="ticket-row__icon">
+              <mat-icon>verified_user</mat-icon>
+            </span>
+            <span class="ticket-row__label">Estado</span>
+          </div>
+          <span class="ticket-row__status-badge">
+            <span class="ticket-row__status-dot"></span>
+            Pendiente de confirmación
+          </span>
+        </div>
       </div>
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Odontólogo</span>
-        <span class="confirmation-row__val">{{ appointment()!.practitionerName }}</span>
-      </div>
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Fecha</span>
-        <span class="confirmation-row__val">{{ appointment()!.dateLabel }}</span>
-      </div>
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Horario</span>
-        <span class="confirmation-row__val">{{ appointment()!.timeLabel }}</span>
-      </div>
-      <div class="confirmation-row">
-        <span class="confirmation-row__label">Estado</span>
-        <span class="confirmation-row__val">Pendiente de confirmación</span>
+
+      <div class="ticket-card__footer">
+        <mat-icon>info_outline</mat-icon>
+        <span>Recuerda asistir 10 minutos antes del horario indicado.</span>
       </div>
     </div>
   }
 
-  <a routerLink="/reservar" class="btn-another">Reservar otro turno</a>
+  <div class="confirmation-actions">
+    <a routerLink="/reservar" class="btn-primary-action">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Reservar otro turno</span>
+    </a>
+    <a routerLink="/" class="btn-secondary-action">Volver al inicio</a>
+  </div>
 </div>

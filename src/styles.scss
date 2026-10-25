@@ -443,6 +443,25 @@ button:focus-visible,
 }
 
 /* =========================================================
+   SERVICE & AVATAR GRADIENTS (SHARED ACROSS PUBLIC & ADMIN)
+   ========================================================= */
+
+.avatar-grad--0 { background: linear-gradient(135deg, #3b82f6, #4f46e5); }
+.avatar-grad--1 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.avatar-grad--2 { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+.avatar-grad--3 { background: linear-gradient(135deg, #a855f7, #c026d3); }
+.svc-gradient--blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.svc-gradient--indigo { background: linear-gradient(135deg, #3b82f6, #4f46e5); }
+.svc-gradient--sky-blue { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+.svc-gradient--cyan { background: linear-gradient(135deg, #38bdf8, #06b6d4); }
+.svc-gradient--violet { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.svc-gradient--purple { background: linear-gradient(135deg, #a855f7, #6d28d9); }
+.svc-gradient--sky-indigo { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+.svc-gradient--indigo-purple { background: linear-gradient(135deg, #6366f1, #7e22ce); }
+.svc-gradient--blue-sky { background: linear-gradient(135deg, #60a5fa, #0284c7); }
+.svc-gradient--fuchsia { background: linear-gradient(135deg, #9333ea, #a21caf); }
+
+/* =========================================================
    SNACKBAR
    ========================================================= */
 

@@ -12,7 +12,7 @@
       <div class="booking-card">
         <div class="step-header">
           <span class="step-header__badge">
-            <mat-icon>person</mat-icon>
+            <mat-icon>person_outline</mat-icon>
           </span>
           <div>
             <p class="step-header__step">Paso 1</p>
@@ -69,7 +69,7 @@
       <div class="booking-card">
         <div class="step-header">
           <span class="step-header__badge">
-            <mat-icon>medical_services</mat-icon>
+            <mat-icon>health_and_safety</mat-icon>
           </span>
           <div>
             <p class="step-header__step">Paso 2</p>
@@ -143,7 +143,7 @@
         <div class="booking-card">
           <div class="step-header">
             <span class="step-header__badge">
-              <mat-icon>event</mat-icon>
+              <mat-icon>event_available</mat-icon>
             </span>
             <div>
               <p class="step-header__step">Paso 3</p>
@@ -168,7 +168,7 @@
               <p class="subsection-label">Horario</p>
               @if (!selectedDate()) {
                 <p class="muted-hint">
-                  Elige una fecha para ver los horarios disponibles.
+                  Elige un servicio, un odontólogo y una fecha para ver los horarios disponibles.
                 </p>
               } @else if (loadingSlots()) {
                 <p class="muted-hint">Cargando horarios disponibles...</p>
@@ -200,7 +200,7 @@
       </button>
     </div>
 
-    <!-- Tarjeta resumen lateral -->
+    <!-- Tarjeta resumen lateral (BookingSummaryCard) -->
     <aside class="booking-summary">
       <div class="summary-card">
         <div class="summary-card__top">
@@ -208,13 +208,37 @@
             <p class="summary-card__eyebrow">Tu turno</p>
             <p class="summary-card__title">{{ completedSteps() }}/4 pasos completos</p>
           </div>
-          <div class="summary-card__progress">{{ progressPercent() }}%</div>
+
+          <div class="circular-progress">
+            <svg width="52" height="52" viewBox="0 0 52 52" class="circular-progress__svg">
+              <circle
+                cx="26"
+                cy="26"
+                r="24"
+                fill="none"
+                stroke-width="4"
+                class="circular-progress__track"
+              />
+              <circle
+                cx="26"
+                cy="26"
+                r="24"
+                fill="none"
+                stroke-width="4"
+                stroke-linecap="round"
+                pathLength="100"
+                [attr.stroke-dasharray]="progressPercent() + ' 100'"
+                class="circular-progress__indicator"
+              />
+            </svg>
+            <span class="circular-progress__label">{{ progressPercent() }}%</span>
+          </div>
         </div>
 
         <div class="summary-card__list">
           <div class="summary-step" [class.summary-step--done]="!!selectedService()">
             <span class="summary-step__icon">
-              <mat-icon>{{ selectedService() ? 'check' : 'medical_services' }}</mat-icon>
+              <mat-icon>{{ selectedService() ? 'check' : 'health_and_safety' }}</mat-icon>
             </span>
             <div class="summary-step__body">
               <p class="summary-step__label">Servicio</p>
@@ -224,7 +248,7 @@
 
           <div class="summary-step" [class.summary-step--done]="!!selectedPractitioner()">
             <span class="summary-step__icon">
-              <mat-icon>{{ selectedPractitioner() ? 'check' : 'person' }}</mat-icon>
+              <mat-icon>{{ selectedPractitioner() ? 'check' : 'person_outline' }}</mat-icon>
             </span>
             <div class="summary-step__body">
               <p class="summary-step__label">Odontólogo</p>
@@ -234,7 +258,7 @@
 
           <div class="summary-step" [class.summary-step--done]="!!selectedDate()">
             <span class="summary-step__icon">
-              <mat-icon>{{ selectedDate() ? 'check' : 'event' }}</mat-icon>
+              <mat-icon>{{ selectedDate() ? 'check' : 'event_available' }}</mat-icon>
             </span>
             <div class="summary-step__body">
               <p class="summary-step__label">Fecha</p>
