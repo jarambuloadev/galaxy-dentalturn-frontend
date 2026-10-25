@@ -1,0 +1,170 @@
+.user-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 48rem;
+}
+
+.shadcn-card {
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+  box-sizing: border-box;
+
+  &__rows { display: flex; flex-direction: column; }
+}
+
+.shadcn-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+
+  &:first-child { padding-top: 0; }
+  &:last-child { padding-bottom: 0; border-bottom: none; }
+
+  @media (min-width: 640px) {
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+  }
+
+  &__meta { display: flex; flex-direction: column; gap: 0.25rem; }
+  &__title { margin: 0; font-size: 0.875rem; font-weight: 500; color: var(--foreground); }
+  &__hint { font-size: 0.75rem; line-height: 1.15rem; color: var(--muted-foreground); }
+  &__control { display: flex; flex-direction: column; gap: 0.375rem; }
+}
+
+.shadcn-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+
+.shadcn-input {
+  width: 100%;
+  min-width: 0;
+  height: 2.125rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--input);
+  background-color: transparent;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus-visible {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+  &--error { border-color: var(--destructive); }
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+
+  @media (min-width: 520px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.role-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  &__icon {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    color: var(--muted-foreground);
+  }
+
+  &__title {
+    font-size: 0.825rem;
+    font-weight: 600;
+  }
+
+  &__hint {
+    font-size: 0.72rem;
+    line-height: 1rem;
+    color: var(--muted-foreground);
+  }
+
+  &:hover { background-color: var(--muted); }
+
+  &--selected {
+    border-color: var(--primary);
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    .role-chip__icon { color: var(--primary); }
+    .role-chip__hint { color: #1e40af; }
+  }
+}
+
+.shadcn-error { margin: 0; font-size: 0.75rem; color: var(--destructive); }
+.form-footer { display: flex; align-items: center; justify-content: flex-start; }
+
+.btn-primary {
+  display: inline-flex;
+  height: 2.125rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background-color: color-mix(in oklab, var(--primary) 85%, transparent); }
+  &:disabled { pointer-events: none; opacity: 0.5; }
+}
+
+.btn-outline {
+  display: inline-flex;
+  height: 2rem;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  mat-icon { width: 16px; height: 16px; font-size: 16px; }
+  &:hover { background-color: var(--muted); }
+}

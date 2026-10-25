@@ -25,6 +25,13 @@ export const API_ROUTES = {
     GET_BY_ID: (id: number) => `api/appointments/${id}`,
     UPDATE_STATUS: (id: number) => `api/appointments/${id}/status`,
   },
+  ADMIN_USERS: {
+    BASE: 'api/adminusers',
+    GET_BY_ID: (id: number) => `api/adminusers/${id}`,
+    CREATE: 'api/adminusers',
+    UPDATE: (id: number) => `api/adminusers/${id}`,
+    DELETE: (id: number) => `api/adminusers/${id}`,
+  },
   PATIENTS: {
     GET_ALL: 'users',
     GET_BY_ID: (id: number) => `users/${id}`,

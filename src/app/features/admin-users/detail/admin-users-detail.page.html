@@ -1,0 +1,70 @@
+<app-page-header
+  [title]="user()?.name ?? 'Detalle de Usuario'"
+  description="Información completa de la cuenta administrativa y nivel de acceso"
+>
+  <a mat-button routerLink="/users"><mat-icon>arrow_back</mat-icon> Volver</a>
+  <a
+    *appHasRole="'admin'"
+    mat-raised-button
+    color="primary"
+    [routerLink]="['/users', user()?.id, 'edit']"
+  >
+    <mat-icon>edit</mat-icon> Editar
+  </a>
+</app-page-header>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (user()) {
+  <mat-card>
+    <mat-card-content>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="detail-field__label">Nombre</span>
+          <span class="detail-field__value">{{ user()!.name }}</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Correo electrónico</span>
+          <span class="detail-field__value">{{ user()!.email }}</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Rol en el sistema</span>
+          <span class="detail-field__value">
+            @if (user()!.rol.toLowerCase() === 'admin') {
+              <span class="role-pill role-pill--admin">Administrador</span>
+            } @else {
+              <span class="role-pill role-pill--user">Recepción / Operador</span>
+            }
+          </span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Estado</span>
+          <span class="detail-field__value">
+            @if (user()!.active) {
+              <mat-chip class="chip-stock-ok">Activo</mat-chip>
+            } @else {
+              <mat-chip class="chip-stock-critical">Inactivo</mat-chip>
+            }
+          </span>
+        </div>
+
+        @if (user()!.createdAt) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado</span>
+            <span class="detail-field__value">{{ user()!.createdAt | date: 'medium' }}</span>
+          </div>
+        }
+
+        @if (user()!.createdBy) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado por</span>
+            <span class="detail-field__value">{{ user()!.createdBy }}</span>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

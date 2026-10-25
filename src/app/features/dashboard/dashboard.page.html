@@ -1,1 +1,246 @@
-<p>dashboard.page works!</p>
+<div class="dashboard-page">
+  <div class="dashboard-header">
+    <h1 class="dashboard-header__title">Dashboard</h1>
+    <p class="dashboard-header__subtitle">Vista general del consultorio</p>
+  </div>
+
+  <!-- 4 Tarjetas KPI Principales (Idénticas a consultorio-dental-turnos) -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-card__icon kpi-card__icon--blue">
+        <mat-icon>assignment</mat-icon>
+      </span>
+      <div>
+        <p class="kpi-card__val">{{ stats().total }}</p>
+        <p class="kpi-card__label">Turnos totales</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-card__icon kpi-card__icon--sky">
+        <mat-icon>pending_actions</mat-icon>
+      </span>
+      <div>
+        <p class="kpi-card__val">{{ stats().pending }}</p>
+        <p class="kpi-card__label">Pendientes</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-card__icon kpi-card__icon--violet">
+        <mat-icon>event_available</mat-icon>
+      </span>
+      <div>
+        <p class="kpi-card__val">{{ stats().confirmed }}</p>
+        <p class="kpi-card__label">Confirmados</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-card__icon kpi-card__icon--fuchsia">
+        <mat-icon>event_busy</mat-icon>
+      </span>
+      <div>
+        <p class="kpi-card__val">{{ stats().cancelled }}</p>
+        <p class="kpi-card__label">Cancelados</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos Principales (Referencia consultorio-dental-turnos) -->
+  <div class="charts-grid">
+    <!-- Gráfico 1: Turnos próximos 7 días (Barras Verticales) -->
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <h2 class="chart-card__title">Turnos próximos 7 días</h2>
+      </div>
+      <div class="chart-card__body">
+        <div class="vbar-chart">
+          <div class="vbar-chart__y-axis">
+            @for (tick of yTicks; track tick) {
+              <span>{{ tick }}</span>
+            }
+          </div>
+          <div class="vbar-chart__plot">
+            <div class="vbar-chart__gridlines">
+              @for (tick of yTicks; track tick) {
+                <div class="vbar-chart__line"></div>
+              }
+            </div>
+            <div class="vbar-chart__columns">
+              @for (item of upcoming7Days(); track item.label) {
+                <div class="vbar-col" [title]="item.label + ': ' + item.value + ' turno(s)'">
+                  <div class="vbar-col__track">
+                    <div
+                      class="vbar-col__fill"
+                      [style.height.%]="(item.value / upcomingMax()) * 100"
+                    ></div>
+                  </div>
+                  <span class="vbar-col__label">{{ item.label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico 2: Turnos por estado (Barras Horizontales con Leyenda) -->
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <h2 class="chart-card__title">Turnos por estado</h2>
+      </div>
+      <div class="chart-card__body">
+        @if (statusData().length === 0) {
+          <div class="chart-empty">Todavía no hay turnos registrados.</div>
+        } @else {
+          <div class="hbar-chart">
+            <div class="hbar-chart__rows">
+              @for (entry of statusData(); track entry.status) {
+                <div class="hbar-row">
+                  <span class="hbar-row__label">{{ entry.label }}</span>
+                  <div class="hbar-row__track">
+                    <div
+                      class="hbar-row__fill"
+                      [style.width.%]="(entry.value / statusMax()) * 100"
+                      [style.backgroundColor]="entry.color"
+                    ></div>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="hbar-chart__x-axis">
+              <span class="hbar-chart__spacer"></span>
+              <div class="hbar-chart__ticks">
+                @for (t of getAxisTicks(statusMax()); track t) {
+                  <span>{{ t }}</span>
+                }
+              </div>
+            </div>
+            <div class="status-legend">
+              @for (entry of statusData(); track entry.status) {
+                <div class="status-legend__item">
+                  <span class="status-legend__dot" [style.backgroundColor]="entry.color"></span>
+                  <span>{{ entry.label }} ({{ entry.value }})</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Gráfico 3: Turnos por servicio (Ancho completo) -->
+    <div class="chart-card chart-card--span-2">
+      <div class="chart-card__header">
+        <h2 class="chart-card__title">Turnos por servicio</h2>
+      </div>
+      <div class="chart-card__body">
+        @if (serviceData().length === 0) {
+          <div class="chart-empty">Todavía no hay datos suficientes.</div>
+        } @else {
+          <div class="hbar-chart">
+            <div class="hbar-chart__rows">
+              @for (item of serviceData(); track item.label) {
+                <div class="hbar-row hbar-row--wide">
+                  <span class="hbar-row__label">{{ item.label }}</span>
+                  <div class="hbar-row__track">
+                    <div
+                      class="hbar-row__fill hbar-row__fill--brand"
+                      [style.width.%]="(item.value / serviceMax()) * 100"
+                    ></div>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="hbar-chart__x-axis">
+              <span class="hbar-chart__spacer hbar-chart__spacer--wide"></span>
+              <div class="hbar-chart__ticks">
+                @for (t of getAxisTicks(serviceMax()); track t) {
+                  <span>{{ t }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- SECCIÓN ADICIONAL: Visualización Médica, Estadística y Administrativa -->
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <h2 class="chart-card__title">Carga clínica por odontólogo</h2>
+          <p class="chart-card__subtitle">Distribución de turnos asignados por profesional</p>
+        </div>
+      </div>
+      <div class="chart-card__body">
+        <div class="practitioner-bars">
+          @for (p of practitionerData(); track p.label) {
+            <div class="prac-stat">
+              <div class="prac-stat__top">
+                <span class="prac-stat__name">{{ p.label }}</span>
+                <span class="prac-stat__meta">{{ p.value }} turnos ({{ p.percent }}%)</span>
+              </div>
+              <div class="prac-stat__track">
+                <div
+                  class="prac-stat__fill"
+                  [style.width.%]="(p.value / practitionerMax()) * 100"
+                  [style.backgroundColor]="p.color"
+                ></div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico 5: Demanda por Franja Horaria y Métricas Operativas Clínicas -->
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <h2 class="chart-card__title">Demanda por franja horaria e indicadores médicos</h2>
+          <p class="chart-card__subtitle">Concentración horaria y capacidad operativa del consultorio</p>
+        </div>
+      </div>
+      <div class="chart-card__body">
+        <div class="practitioner-bars">
+          @for (slot of timeSlotDistribution(); track slot.label) {
+            <div class="prac-stat">
+              <div class="prac-stat__top">
+                <span class="prac-stat__name">{{ slot.label }}</span>
+                <span class="prac-stat__meta">{{ slot.value }} turno(s)</span>
+              </div>
+              <div class="prac-stat__track">
+                <div
+                  class="prac-stat__fill"
+                  [style.width.%]="(slot.value / timeSlotMax()) * 100"
+                  style="background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%)"
+                ></div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="clinical-metrics">
+          <div class="clinical-metric">
+            <span class="clinical-metric__label">Pacientes únicos</span>
+            <span class="clinical-metric__val">{{ stats().uniquePatients }}</span>
+          </div>
+          <div class="clinical-metric">
+            <span class="clinical-metric__label">Tiempo clínico estimado</span>
+            <span class="clinical-metric__val">{{ stats().totalMinutes }} min ({{ stats().totalHours }} h)</span>
+          </div>
+          <div class="clinical-metric">
+            <span class="clinical-metric__label">Odontólogos activos</span>
+            <span class="clinical-metric__val">{{ stats().activePractitioners }}</span>
+          </div>
+          <div class="clinical-metric">
+            <span class="clinical-metric__label">Tasa de confirmación</span>
+            <span class="clinical-metric__val">{{ stats().activeRate }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

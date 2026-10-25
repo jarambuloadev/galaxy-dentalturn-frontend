@@ -1,0 +1,81 @@
+.search-field {
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: 6px;
+}
+
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: oklch(0.95 0.02 258);
+  color: oklch(0.38 0.09 262);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.name-cell {
+  font-weight: 600;
+  color: var(--foreground) !important;
+}
+
+.email-cell {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--admin {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #dbeafe;
+  }
+
+  &--user {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+    border: 1px solid #e9d5ff;
+  }
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--active {
+    background-color: #dcfce7;
+    color: #15803d;
+  }
+
+  &--inactive {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+}
+
+.table-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.skeleton-row {
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--muted);
+}

@@ -30,5 +30,6 @@ export class SidenavComponent {
     { label: 'Odontólogos', icon: 'badge', route: '/practitioners' },
     { label: 'Turnos', icon: 'event_available', route: '/appointments' },
     { label: 'Disponibilidad', icon: 'schedule', route: '/availability' },
+    { label: 'Usuarios', icon: 'manage_accounts', route: '/users' },
   ];
 }

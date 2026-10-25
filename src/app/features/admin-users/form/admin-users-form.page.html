@@ -1,0 +1,141 @@
+<app-page-header [title]="title" [description]="description">
+  <a routerLink="/users" class="btn-outline">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Cancelar</span>
+  </a>
+</app-page-header>
+
+@if (loadingData()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="user-form-wrapper">
+    <div class="shadcn-card">
+      <div class="shadcn-card__rows">
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Nombre del usuario</p>
+            <span class="shadcn-row__hint">Nombre completo o identificador visible en la sesión administrativa.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="user-name" class="shadcn-label">Nombre completo</label>
+            <input
+              id="user-name"
+              type="text"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('name')?.invalid && form.get('name')?.touched"
+              formControlName="name"
+              placeholder="Ej. Ana García"
+              aria-label="Nombre del usuario"
+            />
+            @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+              <p class="shadcn-error">El nombre es requerido</p>
+            }
+            @if (form.get('name')?.hasError('maxlength') && form.get('name')?.touched) {
+              <p class="shadcn-error">Máximo 100 caracteres</p>
+            }
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Correo electrónico</p>
+            <span class="shadcn-row__hint">Dirección de correo utilizada para iniciar sesión en el sistema.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="user-email" class="shadcn-label">Email de acceso</label>
+            <input
+              id="user-email"
+              type="email"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('email')?.invalid && form.get('email')?.touched"
+              formControlName="email"
+              placeholder="Ej. admin@dentalcare.com"
+              aria-label="Correo electrónico del usuario"
+            />
+            @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+              <p class="shadcn-error">El correo electrónico es requerido</p>
+            }
+            @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+              <p class="shadcn-error">Ingresa un correo electrónico válido</p>
+            }
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Rol y permisos</p>
+            <span class="shadcn-row__hint">Define el nivel de privilegios dentro del panel del consultorio.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <span class="shadcn-label">Rol asignado</span>
+            <div class="roles-grid">
+              @for (r of roles; track r.value) {
+                <button
+                  type="button"
+                  class="role-chip"
+                  [class.role-chip--selected]="form.get('rol')?.value === r.value"
+                  (click)="selectRole(r.value)"
+                >
+                  <div class="role-chip__header">
+                    <mat-icon class="role-chip__icon">
+                      {{ form.get('rol')?.value === r.value ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span class="role-chip__title">{{ r.label }}</span>
+                  </div>
+                  <span class="role-chip__hint">{{ r.hint }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Contraseña</p>
+            <span class="shadcn-row__hint">
+              {{
+                isEditMode
+                  ? 'Déjalo en blanco si deseas conservar la contraseña actual.'
+                  : 'Clave secreta para el ingreso al panel (mínimo 6 caracteres).'
+              }}
+            </span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="user-password" class="shadcn-label">
+              {{ isEditMode ? 'Nueva contraseña (opcional)' : 'Contraseña' }}
+            </label>
+            <input
+              id="user-password"
+              type="password"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('passwordHash')?.invalid && form.get('passwordHash')?.touched"
+              formControlName="passwordHash"
+              [placeholder]="isEditMode ? '•••••••• (sin cambios)' : 'Mínimo 6 caracteres'"
+              aria-label="Contraseña del usuario"
+            />
+            @if (form.get('passwordHash')?.hasError('required') && form.get('passwordHash')?.touched) {
+              <p class="shadcn-error">La contraseña es requerida</p>
+            }
+            @if (form.get('passwordHash')?.hasError('minlength') && form.get('passwordHash')?.touched) {
+              <p class="shadcn-error">La contraseña debe tener al menos 6 caracteres</p>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="form.invalid || loading()"
+      >
+        @if (loading()) {
+          <span>Guardando...</span>
+        } @else {
+          <span>{{ isEditMode ? 'Guardar usuario' : 'Crear usuario' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+}

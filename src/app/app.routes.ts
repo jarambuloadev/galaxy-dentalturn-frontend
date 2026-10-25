@@ -90,6 +90,18 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'users',
+        loadChildren: () =>
+          import('./features/admin-users/admin-users.routes').then(
+            (m) => m.ADMIN_USERS_ROUTES
+          ),
+      },
+      {
+        path: 'usuarios',
+        redirectTo: 'users',
+        pathMatch: 'full',
+      },
+      {
         path: 'disponibilidad',
         redirectTo: 'availability',
         pathMatch: 'full',

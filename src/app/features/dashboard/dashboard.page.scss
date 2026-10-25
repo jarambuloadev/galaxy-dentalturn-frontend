@@ -1,0 +1,314 @@
+.dashboard-page {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 1.5rem;
+  &__title { margin: 0; font-size: 1.35rem; font-weight: 600; color: var(--foreground); letter-spacing: -0.02em; }
+  &__subtitle { margin: 0.2rem 0 0; font-size: 0.875rem; color: var(--muted-foreground); }
+}
+
+.kpi-grid {
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  @media (min-width: 640px) { grid-template-columns: repeat(4, 1fr); }
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 1rem 1.15rem;
+
+  &__icon {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    color: #fff;
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+    &--blue { background: linear-gradient(135deg, #3b82f6, #4f46e5); }
+    &--sky { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+    &--violet { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    &--fuchsia { background: linear-gradient(135deg, #9333ea, #a21caf); }
+  }
+
+  &__val { margin: 0; font-size: 1.35rem; font-weight: 600; line-height: 1.2; color: var(--foreground); }
+  &__label { margin: 0.1rem 0 0; font-size: 0.75rem; color: var(--muted-foreground); }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chart-card {
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+
+  &--span-2 {
+    @media (min-width: 1024px) {
+      grid-column: span 2;
+    }
+  }
+
+  &__header { margin-bottom: 1rem; }
+  &__title { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--foreground); }
+  &__subtitle { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--muted-foreground); }
+  &__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+}
+
+.chart-empty {
+  height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+/* Gráfico Vertical (Turnos próximos 7 días) */
+.vbar-chart {
+  display: flex;
+  height: 210px;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+
+  &__y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 1.65rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    text-align: right;
+    width: 1.5rem;
+  }
+
+  &__plot {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__gridlines {
+    position: absolute;
+    inset: 0 0 1.65rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  &__line {
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+  }
+
+  &__columns {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+}
+
+.vbar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__track {
+    flex: 1;
+    width: 100%;
+    max-width: 34px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  &__fill {
+    width: 100%;
+    background-color: #2563eb;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease;
+    min-height: 0;
+  }
+
+  &__label {
+    height: 1.65rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.72rem;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+}
+
+/* Gráfico Horizontal (Turnos por estado / por servicio) */
+.hbar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  &__x-axis {
+    display: flex;
+    align-items: center;
+    padding-top: 0.25rem;
+  }
+
+  &__spacer {
+    width: 95px;
+    flex-shrink: 0;
+    &--wide { width: 140px; }
+  }
+
+  &__ticks {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+}
+
+.hbar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__label {
+    width: 85px;
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 0.78rem;
+    color: var(--muted-foreground);
+  }
+
+  &--wide .hbar-row__label {
+    width: 130px;
+  }
+
+  &__track {
+    flex: 1;
+    height: 22px;
+    background-color: oklch(0.97 0.008 258);
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+    transition: width 0.3s ease;
+
+    &--brand {
+      background-color: #1d63dc;
+    }
+  }
+}
+
+.status-legend {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+  }
+}
+
+/* Gráficos Médicos y Administrativos Adicionales */
+.practitioner-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.prac-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+
+  &__name { font-weight: 500; color: var(--foreground); }
+  &__meta { color: var(--muted-foreground); font-weight: 500; }
+
+  &__track {
+    height: 10px;
+    border-radius: 999px;
+    background-color: var(--muted);
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+}
+
+.clinical-metrics {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.clinical-metric {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.75rem;
+  background-color: oklch(0.978 0.01 258);
+
+  &__label { font-size: 0.72rem; color: var(--muted-foreground); }
+  &__val { margin-top: 0.15rem; font-size: 0.95rem; font-weight: 600; color: var(--foreground); }
+}
