@@ -33,10 +33,10 @@ export const API_ROUTES = {
     DELETE: (id: number) => `api/adminusers/${id}`,
   },
   PATIENTS: {
-    GET_ALL: 'users',
-    GET_BY_ID: (id: number) => `users/${id}`,
-    CREATE: 'users',
-    UPDATE: (id: number) => `users/${id}`,
-    DELETE: (id: number) => `users/${id}`,
+    BASE: 'api/patients',
+    GET_BY_ID: (id: number) => `api/patients/${id}`,
+    CREATE: 'api/patients',
+    UPDATE: (id: number) => `api/patients/${id}`,
+    DELETE: (id: number) => `api/patients/${id}`,
   },
 };

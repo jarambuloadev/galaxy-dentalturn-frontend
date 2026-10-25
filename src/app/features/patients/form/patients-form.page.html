@@ -1,0 +1,105 @@
+<app-page-header [title]="title" [description]="description">
+  <a routerLink="/patients" class="btn-outline">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Cancelar</span>
+  </a>
+</app-page-header>
+
+@if (loadingData()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="patient-form-wrapper">
+    <div class="shadcn-card">
+      <div class="shadcn-card__rows">
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Nombre del paciente</p>
+            <span class="shadcn-row__hint">Nombre y apellido completos como figuran en su ficha clínica.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="patient-name" class="shadcn-label">Nombre completo</label>
+            <input
+              id="patient-name"
+              type="text"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('name')?.invalid && form.get('name')?.touched"
+              formControlName="name"
+              placeholder="Ej. María Fernanda López"
+              aria-label="Nombre del paciente"
+            />
+            @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+              <p class="shadcn-error">El nombre es requerido</p>
+            }
+            @if (form.get('name')?.hasError('maxlength') && form.get('name')?.touched) {
+              <p class="shadcn-error">Máximo 100 caracteres</p>
+            }
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Correo electrónico</p>
+            <span class="shadcn-row__hint">Dirección de email para confirmaciones y recordatorios de turnos.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="patient-email" class="shadcn-label">Email de contacto</label>
+            <input
+              id="patient-email"
+              type="email"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('email')?.invalid && form.get('email')?.touched"
+              formControlName="email"
+              placeholder="Ej. maria.lopez@correo.com"
+              aria-label="Correo electrónico del paciente"
+            />
+            @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+              <p class="shadcn-error">El correo electrónico es requerido</p>
+            }
+            @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+              <p class="shadcn-error">Ingresa un correo electrónico válido</p>
+            }
+          </div>
+        </div>
+
+        <div class="shadcn-row">
+          <div class="shadcn-row__meta">
+            <p class="shadcn-row__title">Teléfono / WhatsApp</p>
+            <span class="shadcn-row__hint">Número telefónico directo para coordinación de citas odontológicas.</span>
+          </div>
+          <div class="shadcn-row__control">
+            <label for="patient-phone" class="shadcn-label">Número de teléfono</label>
+            <input
+              id="patient-phone"
+              type="tel"
+              class="shadcn-input"
+              [class.shadcn-input--error]="form.get('phone')?.invalid && form.get('phone')?.touched"
+              formControlName="phone"
+              placeholder="Ej. +51 987 654 321"
+              aria-label="Teléfono del paciente"
+            />
+            @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
+              <p class="shadcn-error">El teléfono es requerido</p>
+            }
+            @if (form.get('phone')?.hasError('maxlength') && form.get('phone')?.touched) {
+              <p class="shadcn-error">Máximo 30 caracteres</p>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="form.invalid || loading()"
+      >
+        @if (loading()) {
+          <span>Guardando...</span>
+        } @else {
+          <span>{{ isEditMode ? 'Guardar paciente' : 'Crear paciente' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+}

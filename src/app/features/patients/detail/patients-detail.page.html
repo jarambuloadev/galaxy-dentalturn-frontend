@@ -1,0 +1,69 @@
+<app-page-header
+  [title]="patient()?.name ?? 'Detalle de Paciente'"
+  description="Información completa del paciente y datos de contacto"
+>
+  <a mat-button routerLink="/patients"><mat-icon>arrow_back</mat-icon> Volver</a>
+  <a
+    *appHasRole="'admin'"
+    mat-raised-button
+    color="primary"
+    [routerLink]="['/patients', patient()?.id, 'edit']"
+  >
+    <mat-icon>edit</mat-icon> Editar
+  </a>
+</app-page-header>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (patient()) {
+  <mat-card>
+    <mat-card-content>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="detail-field__label">Nombre completo</span>
+          <span class="detail-field__value">{{ patient()!.name }}</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Correo electrónico</span>
+          <span class="detail-field__value">{{ patient()!.email }}</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Teléfono</span>
+          <span class="detail-field__value">
+            <span class="phone-pill">
+              <mat-icon class="phone-pill__icon">call</mat-icon>
+              {{ patient()!.phone }}
+            </span>
+          </span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Estado</span>
+          <span class="detail-field__value">
+            @if (patient()!.active) {
+              <mat-chip class="chip-stock-ok">Activo</mat-chip>
+            } @else {
+              <mat-chip class="chip-stock-critical">Inactivo</mat-chip>
+            }
+          </span>
+        </div>
+
+        @if (patient()!.createdAt) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado</span>
+            <span class="detail-field__value">{{ patient()!.createdAt | date: 'medium' }}</span>
+          </div>
+        }
+
+        @if (patient()!.createdBy) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado por</span>
+            <span class="detail-field__value">{{ patient()!.createdBy }}</span>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

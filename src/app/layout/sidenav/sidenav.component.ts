@@ -28,6 +28,7 @@ export class SidenavComponent {
     { label: 'Dashboard', icon: 'grid_view', route: '/dashboard' },
     { label: 'Servicios', icon: 'medical_services', route: '/services' },
     { label: 'Odontólogos', icon: 'badge', route: '/practitioners' },
+    { label: 'Pacientes', icon: 'groups', route: '/patients' },
     { label: 'Turnos', icon: 'event_available', route: '/appointments' },
     { label: 'Disponibilidad', icon: 'schedule', route: '/availability' },
     { label: 'Usuarios', icon: 'manage_accounts', route: '/users' },

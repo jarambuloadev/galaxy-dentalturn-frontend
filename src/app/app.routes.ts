@@ -76,6 +76,18 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'patients',
+        loadChildren: () =>
+          import('./features/patients/patients.routes').then(
+            (m) => m.PATIENTS_ROUTES
+          ),
+      },
+      {
+        path: 'pacientes',
+        redirectTo: 'patients',
+        pathMatch: 'full',
+      },
+      {
         path: 'appointments',
         loadComponent: () =>
           import('./features/appointments/appointments.page').then(
