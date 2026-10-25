@@ -28,6 +28,6 @@ export class SidenavComponent {
     { label: 'Dashboard', icon: 'grid_view', route: '/dashboard' },
     { label: 'Servicios', icon: 'medical_services', route: '/services' },
     { label: 'Turnos', icon: 'event_available', route: '/appointments' },
-    { label: 'Disponibilidad', icon: 'schedule', route: '/patients' },
+    { label: 'Disponibilidad', icon: 'schedule', route: '/availability' },
   ];
 }

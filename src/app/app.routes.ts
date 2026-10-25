@@ -38,6 +38,16 @@ export const routes: Routes = [
                     import('./features/services/services.routes').then((m)=> m.SERVICES_ROUTES),
 
             },
+            {
+                path: 'availability',
+                loadComponent: () =>
+                    import('./features/availability/availability.page').then((m) => m.AvailabilityPage),
+            },
+            {
+                path: 'disponibilidad',
+                redirectTo: 'availability',
+                pathMatch: 'full',
+            },
             { path: '', redirectTo: 'dashboard' , pathMatch: 'full'},
         ]
        

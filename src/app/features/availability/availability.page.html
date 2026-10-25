@@ -1,0 +1,78 @@
+<div class="availability-container">
+  <div class="availability-header">
+    <h1 class="availability-header__title">Disponibilidad</h1>
+    <p class="availability-header__subtitle">
+      Configura los días y horarios de atención del consultorio. Los pacientes solo van
+      a poder reservar turnos dentro de este horario.
+    </p>
+  </div>
+
+  @if (loadingData()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="availability-form">
+      <div class="availability-card" formArrayName="days">
+        <div class="availability-card__content">
+          @for (dayGroup of daysArray.controls; track $index; let i = $index) {
+            <div class="availability-row" [formGroupName]="i">
+              <p class="availability-row__day">{{ getDayLabel(i) }}</p>
+
+              <div class="availability-row__switch-cell">
+                <button
+                  type="button"
+                  role="switch"
+                  class="shadcn-switch"
+                  [class.shadcn-switch--checked]="isDayOpen(i)"
+                  [attr.aria-checked]="isDayOpen(i)"
+                  [attr.aria-label]="'Activar horario de ' + getDayLabel(i)"
+                  (click)="toggleDay(i)"
+                >
+                  <span class="shadcn-switch__thumb"></span>
+                </button>
+                <span class="availability-row__status">
+                  {{ isDayOpen(i) ? 'Abierto' : 'Cerrado' }}
+                </span>
+              </div>
+
+              <div class="availability-row__field">
+                <label class="shadcn-label" [attr.for]="'open-time-' + i">Desde</label>
+                <input
+                  [id]="'open-time-' + i"
+                  type="time"
+                  class="shadcn-time-input"
+                  formControlName="openTime"
+                />
+              </div>
+
+              <div class="availability-row__field">
+                <label class="shadcn-label" [attr.for]="'close-time-' + i">Hasta</label>
+                <input
+                  [id]="'close-time-' + i"
+                  type="time"
+                  class="shadcn-time-input"
+                  [class.shadcn-time-input--error]="hasTimeRangeError(i)"
+                  formControlName="closeTime"
+                />
+                @if (hasTimeRangeError(i)) {
+                  <p class="shadcn-error">
+                    La hora de fin debe ser posterior a la hora de inicio
+                  </p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="availability-footer">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="loading()"
+        >
+          {{ loading() ? 'Guardando...' : 'Guardar horario' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>
