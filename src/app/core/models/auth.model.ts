@@ -9,6 +9,7 @@ export interface LoginResponse {
   token: string;
   expirationDate: string;
   role: Role;
+  rol?: Role;
   email?: string;
 }
 
@@ -24,6 +25,14 @@ export interface CurrentUser {
   username: string;
   email: string;
   role: Role;
+  rol?: Role;
   token: string;
   expiresAt: string;
+}
+
+export interface AdminUser {
+  id?: number;
+  email: string;
+  name?: string;
+  rol: Role;
 }

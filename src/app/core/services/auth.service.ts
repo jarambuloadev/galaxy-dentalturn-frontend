@@ -31,10 +31,12 @@ export class AuthService {
       .pipe(
         map((result) => {
           const data = result.value!;
+          const role = (data.role || data.rol || 'admin') as CurrentUser['role'];
           const user: CurrentUser = {
             username: request.email,
             email: data.email || request.email,
-            role: data.role,
+            role,
+            rol: role,
             token: data.token,
             expiresAt: data.expirationDate
           }

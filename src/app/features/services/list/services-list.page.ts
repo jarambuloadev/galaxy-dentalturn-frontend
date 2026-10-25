@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { SharedMaterialModule } from '../../../shared/shared-material.module';
@@ -11,6 +11,9 @@ import { NotificationService } from '../../../core/services/notification.service
 import { Service } from '../../../core/models/service.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-services-list-page',
@@ -27,12 +30,14 @@ import { PageEvent } from '@angular/material/paginator';
   templateUrl: './services-list.page.html',
   styleUrl: './services-list.page.scss',
 })
-export class ServicesListPage {
+export class ServicesListPage implements OnInit {
+ 
   private readonly serviceService = inject(ServiceService);
   private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['id', 'name', 'description', 'price', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'durationMin', 'actions'];
   dataSource= new MatTableDataSource<Service>([]);
   loading = signal(false);
   totalItems = 0;
@@ -40,6 +45,16 @@ export class ServicesListPage {
   pageIndex = 0;
 
   searchControl = new FormControl('');
+
+   ngOnInit(): void {
+    this.loadServices();
+    this.searchControl.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe(() => {
+        this.pageIndex = 0;
+        this.loadServices();
+      });
+  }
 
   loadServices(): void {
     this.loading.set(true);
@@ -66,6 +81,38 @@ export class ServicesListPage {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadServices();
+  }
+
+  editService(id: number): void {
+    this.router.navigate(['/services', id, 'edit']);
+  }
+
+  confirmDelete(service: Service): void {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Eliminar service',
+        message: `¿Estás seguro de eliminar "${service.name}"?. Esta acción no se deshacer.`,
+        confirmLabel: 'Eliminar'
+      }
+    });
+
+    ref.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.deleteService(service.id);
+      }
+    })
+  }
+
+  private deleteService(id: number): void {
+    this.serviceService.delete(id).subscribe({
+      next: () => {
+        this.notificationService.success("Servicio eliminado correctamente");
+        this.loadServices();
+      },
+      error: () => {
+        this.notificationService.error("Error al eliminar el servicio");
+      }
+    });
   }
 
 }
