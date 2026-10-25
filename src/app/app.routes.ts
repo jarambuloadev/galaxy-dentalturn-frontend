@@ -34,8 +34,8 @@ export const routes: Routes = [
             },
             {
                 path: 'services',
-                loadComponent: () => 
-                    import('./features/services/list/services-list.page').then((m)=> m.ServicesListPage),
+                loadChildren: () => 
+                    import('./features/services/services.routes').then((m)=> m.SERVICES_ROUTES),
 
             },
             { path: '', redirectTo: 'dashboard' , pathMatch: 'full'},

@@ -1,1 +1,57 @@
-<p>services-detail.page works!</p>
+<app-page-header [title]="service()?.name ?? 'Detalle de Servicio'" description="Información completa del servicio">
+  <a mat-button routerLink="/services"><mat-icon>arrow_back</mat-icon> Volver</a>
+  <a *appHasRole="'admin'" mat-raised-button color="primary"
+     [routerLink]="['/services', service()?.id, 'edit']">
+    <mat-icon>edit</mat-icon> Editar
+  </a>
+</app-page-header>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (service()) {
+  <mat-card>
+    <mat-card-content>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="detail-field__label">Nombre</span>
+          <span class="detail-field__value">{{ service()!.name }}</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Duración mínima</span>
+          <span class="detail-field__value">{{ service()!.durationMin }} minutos</span>
+        </div>
+
+        <div class="detail-field">
+          <span class="detail-field__label">Estado</span>
+          <span class="detail-field__value">
+            @if (service()!.active) {
+              <mat-chip class="chip-stock-ok">Activo</mat-chip>
+            } @else {
+              <mat-chip class="chip-stock-critical">Inactivo</mat-chip>
+            }
+          </span>
+        </div>
+
+        <div class="detail-field full-width">
+          <span class="detail-field__label">Descripción</span>
+          <span class="detail-field__value">{{ service()!.description }}</span>
+        </div>
+
+        @if (service()!.createdAt) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado</span>
+            <span class="detail-field__value">{{ service()!.createdAt | date:'medium' }}</span>
+          </div>
+        }
+
+        @if (service()!.createdBy) {
+          <div class="detail-field">
+            <span class="detail-field__label">Creado por</span>
+            <span class="detail-field__value">{{ service()!.createdBy }}</span>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

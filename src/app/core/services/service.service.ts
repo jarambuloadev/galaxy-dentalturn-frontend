@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiServiceFactory } from './api-service-factory';
 import { API_ROUTES } from '../constants/api-routes.constants';
 import { map, Observable } from 'rxjs';
-import { Service } from '../models/service.model';
+import { CreateServiceRequest, Service, UpdateServiceRequest } from '../models/service.model';
 import { PagedRequest } from '../models/paged.model';
 import { ApiResult } from '../models/auth.model';
 
@@ -11,7 +11,7 @@ import { ApiResult } from '../models/auth.model';
   providedIn: 'root',
 })
 export class ServiceService {
-  private readonly http= inject(HttpClient);
+  private readonly http = inject(HttpClient);
   private readonly factory = inject(ApiServiceFactory);
 
   private get baseUrl(): string {
@@ -25,28 +25,25 @@ export class ServiceService {
       search: request.search || '',
     };
     return this.http
-    .get<ApiResult<Service[]>>(this.baseUrl, { params })
-    .pipe(
-      map((result) => result.value ?? [] as Service[])
-    );
+      .get<ApiResult<Service[]>>(this.baseUrl, { params })
+      .pipe(map((result) => result.value ?? ([] as Service[])));
   }
 
-  getById(id: number) {
+  getById(id: number): Observable<Service> {
     return this.http
-    .get(`${this.baseUrl}/${id}`);
+      .get<ApiResult<Service>>(`${this.baseUrl}/${id}`)
+      .pipe(map((result) => result.value!));
   }
 
-  create(request: any) {
-    return this.http.post(this.baseUrl, request);
+  create(request: CreateServiceRequest): Observable<ApiResult> {
+    return this.http.post<ApiResult>(this.baseUrl, request);
   }
 
-  update(id: number, request: any) {
-    return this.http.put(`${this.baseUrl}/${id}`, request);
+  update(id: number, request: UpdateServiceRequest): Observable<ApiResult> {
+    return this.http.put<ApiResult>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
-  } 
-
+  delete(id: number): Observable<ApiResult> {
+    return this.http.delete<ApiResult>(`${this.baseUrl}/${id}`);
+  }
 }
-      

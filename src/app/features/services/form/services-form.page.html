@@ -1,1 +1,78 @@
-<p>services-form.page works!</p>
+<app-page-header [title]="title" [description]="description">
+  <a mat-button routerLink="/services">
+    <mat-icon>arrow_back</mat-icon> Cancelar
+  </a>
+</app-page-header>
+
+@if (loadingData()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else {
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="service-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre del servicio</mat-label>
+            <input matInput formControlName="name" aria-label="Nombre del servicio" />
+            @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+              <mat-error>El nombre es requerido</mat-error>
+            }
+            @if (form.get('name')?.hasError('maxlength') && form.get('name')?.touched) {
+              <mat-error>Máximo 100 caracteres</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Duración mínima (minutos)</mat-label>
+            <mat-icon matPrefix>schedule</mat-icon>
+            <input
+              matInput
+              type="number"
+              formControlName="durationMin"
+              step="5"
+              min="5"
+              aria-label="Duración mínima en minutos"
+            />
+            @if (form.get('durationMin')?.hasError('required') && form.get('durationMin')?.touched) {
+              <mat-error>La duración mínima es requerida</mat-error>
+            }
+            @if (form.get('durationMin')?.hasError('min') && form.get('durationMin')?.touched) {
+              <mat-error>La duración mínima debe ser al menos 5 minutos</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="3"
+            aria-label="Descripción del servicio"
+          ></textarea>
+          @if (form.get('description')?.hasError('required') && form.get('description')?.touched) {
+            <mat-error>La descripción es requerida</mat-error>
+          }
+          @if (form.get('description')?.hasError('maxlength') && form.get('description')?.touched) {
+            <mat-error>Máximo 250 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid || loading()"
+          >
+            @if (loading()) {
+              <mat-spinner diameter="18" />
+            } @else {
+              {{ isEditMode ? 'Actualizar Servicio' : 'Crear Servicio' }}
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
