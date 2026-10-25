@@ -1,0 +1,62 @@
+<section class="hero-section">
+  <span class="hero-badge">Turnos online, todo el día</span>
+
+  <h1 class="hero-title">
+    Gestión de turnos
+    <span class="hero-title__gradient">simple y profesional</span>
+    para tu consultorio
+  </h1>
+
+  <p class="hero-subtitle">
+    Reserva tu turno online: ortodoncia, control general, limpieza dental y más.
+  </p>
+
+  <div class="hero-actions">
+    <a routerLink="/reservar" class="btn-hero-primary">Sacar turno</a>
+    <a [routerLink]="adminRoute" class="btn-hero-outline">Soy administrador</a>
+  </div>
+
+  <dl class="highlights-grid">
+    @for (item of highlights; track item.text) {
+      <div class="highlight-card">
+        <span class="highlight-card__icon">
+          <mat-icon>{{ item.icon }}</mat-icon>
+        </span>
+        <dd class="highlight-card__text">{{ item.text }}</dd>
+      </div>
+    }
+  </dl>
+</section>
+
+@if (services().length > 0) {
+  <section class="services-section">
+    <div class="services-container">
+      <div class="services-header">
+        <h2 class="services-header__title">Nuestros servicios</h2>
+        <p class="services-header__subtitle">
+          Elige el servicio y te mostramos los odontólogos disponibles.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        @for (service of services(); track service.id) {
+          @let visual = getVisual(service.name);
+          <a
+            [routerLink]="['/reservar']"
+            [queryParams]="{ serviceId: service.id }"
+            class="service-card"
+          >
+            <span class="service-card__icon" [ngClass]="visual.gradientClass">
+              <mat-icon>{{ visual.icon }}</mat-icon>
+            </span>
+            <span class="service-card__name">{{ service.name }}</span>
+          </a>
+        }
+      </div>
+
+      <div class="services-footer">
+        <a routerLink="/reservar" class="btn-hero-primary">Reservar ahora</a>
+      </div>
+    </div>
+  </section>
+}

@@ -1,0 +1,183 @@
+<div class="appointments-page">
+  <div class="page-head">
+    <h1 class="page-head__title">Turnos</h1>
+    <p class="page-head__subtitle">Vista general de los turnos del consultorio</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-card__icon stat-card__icon--blue">
+        <mat-icon>assignment</mat-icon>
+      </span>
+      <div>
+        <p class="stat-card__label">Turnos listados</p>
+        <p class="stat-card__val">{{ stats().total }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-card__icon stat-card__icon--sky">
+        <mat-icon>pending_actions</mat-icon>
+      </span>
+      <div>
+        <p class="stat-card__label">Pendientes</p>
+        <p class="stat-card__val">{{ stats().pending }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-card__icon stat-card__icon--violet">
+        <mat-icon>event_available</mat-icon>
+      </span>
+      <div>
+        <p class="stat-card__label">Confirmados</p>
+        <p class="stat-card__val">{{ stats().confirmed }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-card__icon stat-card__icon--fuchsia">
+        <mat-icon>event_busy</mat-icon>
+      </span>
+      <div>
+        <p class="stat-card__label">Cancelados</p>
+        <p class="stat-card__val">{{ stats().cancelled }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="shadcn-card">
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label class="filter-label">Fecha</label>
+        <input
+          type="date"
+          class="filter-control"
+          [(ngModel)]="filterDate"
+          (change)="loadAppointments()"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Servicio</label>
+        <select
+          class="filter-control"
+          [(ngModel)]="filterServiceId"
+          (change)="loadAppointments()"
+        >
+          <option [ngValue]="null">Todos</option>
+          @for (srv of services(); track srv.id) {
+            <option [ngValue]="srv.id">{{ srv.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Odontólogo</label>
+        <select
+          class="filter-control"
+          [(ngModel)]="filterPractitionerId"
+          (change)="loadAppointments()"
+        >
+          <option [ngValue]="null">Todos</option>
+          @for (prac of practitioners(); track prac.id) {
+            <option [ngValue]="prac.id">{{ prac.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Estado</label>
+        <select
+          class="filter-control"
+          [(ngModel)]="filterStatus"
+          (change)="loadAppointments()"
+        >
+          <option value="">Todos</option>
+          <option value="PENDING">Pendiente</option>
+          <option value="CONFIRMED">Confirmado</option>
+          <option value="CANCELLED">Cancelado</option>
+          <option value="COMPLETED">Completado</option>
+        </select>
+      </div>
+
+      @if (hasFilters) {
+        <button type="button" class="btn-clear" (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+      }
+    </div>
+
+    @if (appointments().length === 0) {
+      <p class="empty-msg">No hay turnos que coincidan con los filtros.</p>
+    } @else {
+      <div class="table-wrapper">
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Contacto</th>
+              <th>Servicio</th>
+              <th>Odontólogo</th>
+              <th>Fecha</th>
+              <th>Horario</th>
+              <th>Estado</th>
+              <th class="text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (appt of appointments(); track appt.id) {
+              <tr>
+                <td class="font-medium">{{ appt.patientName }}</td>
+                <td class="contact-cell">
+                  <div>{{ appt.patientEmail }}</div>
+                  <div>{{ appt.patientPhone }}</div>
+                </td>
+                <td>{{ appt.serviceName }}</td>
+                <td>{{ appt.practitionerName }}</td>
+                <td>{{ appt.dateLabel }}</td>
+                <td>{{ appt.timeLabel }}</td>
+                <td>
+                  <span class="status-badge" [attr.data-status]="appt.status">
+                    {{ getStatusLabel(appt.status) }}
+                  </span>
+                </td>
+                <td class="text-right">
+                  <div class="row-actions">
+                    @if (appt.status === 'PENDING') {
+                      <button
+                        type="button"
+                        class="btn-sm btn-sm--primary"
+                        (click)="updateStatus(appt, 'CONFIRMED')"
+                      >
+                        Confirmar
+                      </button>
+                    }
+                    @if (appt.status === 'CONFIRMED') {
+                      <button
+                        type="button"
+                        class="btn-sm btn-sm--primary"
+                        (click)="updateStatus(appt, 'COMPLETED')"
+                      >
+                        Completar
+                      </button>
+                    }
+                    @if (appt.status === 'PENDING' || appt.status === 'CONFIRMED') {
+                      <button
+                        type="button"
+                        class="btn-sm btn-sm--danger"
+                        (click)="confirmCancel(appt)"
+                      >
+                        Cancelar
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

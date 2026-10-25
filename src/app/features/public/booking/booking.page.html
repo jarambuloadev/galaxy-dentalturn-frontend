@@ -1,0 +1,258 @@
+<div class="booking-container">
+  <div class="booking-header">
+    <h1 class="booking-header__title">Reserva tu turno</h1>
+    <p class="booking-header__subtitle">
+      Completa tus datos, elige el servicio y el horario que más te convenga.
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="booking-grid">
+    <div class="booking-steps">
+      <!-- Paso 1: Tus datos -->
+      <div class="booking-card">
+        <div class="step-header">
+          <span class="step-header__badge">
+            <mat-icon>person</mat-icon>
+          </span>
+          <div>
+            <p class="step-header__step">Paso 1</p>
+            <h2 class="step-header__title">Tus datos</h2>
+          </div>
+        </div>
+
+        <div class="fields-grid">
+          <div class="field-item">
+            <label class="field-label" for="patient-name">Nombre completo</label>
+            <input
+              id="patient-name"
+              type="text"
+              class="shadcn-input"
+              formControlName="name"
+              placeholder="Tu nombre y apellido"
+            />
+            @if (form.get('name')?.invalid && form.get('name')?.touched) {
+              <p class="field-error">Ingresa tu nombre completo</p>
+            }
+          </div>
+
+          <div class="field-item">
+            <label class="field-label" for="patient-email">Email</label>
+            <input
+              id="patient-email"
+              type="email"
+              class="shadcn-input"
+              formControlName="email"
+              placeholder="tu@email.com"
+            />
+            @if (form.get('email')?.invalid && form.get('email')?.touched) {
+              <p class="field-error">Ingresa un email válido</p>
+            }
+          </div>
+
+          <div class="field-item">
+            <label class="field-label" for="patient-phone">Teléfono</label>
+            <input
+              id="patient-phone"
+              type="tel"
+              class="shadcn-input"
+              formControlName="phone"
+              placeholder="+51 999 999 999"
+            />
+            @if (form.get('phone')?.invalid && form.get('phone')?.touched) {
+              <p class="field-error">Ingresa tu teléfono de contacto</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2: Servicio y odontólogo -->
+      <div class="booking-card">
+        <div class="step-header">
+          <span class="step-header__badge">
+            <mat-icon>medical_services</mat-icon>
+          </span>
+          <div>
+            <p class="step-header__step">Paso 2</p>
+            <h2 class="step-header__title">Servicio y odontólogo</h2>
+            <p class="step-header__desc">Elige el servicio primero para ver quién lo atiende.</p>
+          </div>
+        </div>
+
+        <div class="step-subsection">
+          <p class="subsection-label">Servicio</p>
+          <div class="service-select-grid">
+            @for (srv of services(); track srv.id) {
+              @let visual = getVisual(srv.name);
+              <button
+                type="button"
+                class="service-option"
+                [class.service-option--selected]="selectedServiceId() === srv.id"
+                (click)="selectService(srv.id)"
+              >
+                <span class="service-option__icon" [ngClass]="visual.gradientClass">
+                  <mat-icon>{{ visual.icon }}</mat-icon>
+                </span>
+                <span class="service-option__name">{{ srv.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="step-subsection">
+          <p class="subsection-label">Odontólogo</p>
+          @if (!selectedServiceId()) {
+            <p class="dashed-placeholder">
+              Elige primero un servicio para ver los odontólogos disponibles.
+            </p>
+          } @else if (availablePractitioners().length === 0) {
+            <p class="dashed-placeholder">
+              No hay odontólogos disponibles para ese servicio.
+            </p>
+          } @else {
+            <div class="practitioner-select-grid">
+              @for (prac of availablePractitioners(); track prac.id; let i = $index) {
+                <button
+                  type="button"
+                  class="practitioner-option"
+                  [class.practitioner-option--selected]="selectedPractitionerId() === prac.id"
+                  (click)="selectPractitioner(prac.id)"
+                >
+                  <span class="practitioner-option__avatar" [ngClass]="getAvatarClass(i)">
+                    {{ getInitials(prac.name) }}
+                  </span>
+                  <div class="practitioner-option__info">
+                    <p class="practitioner-option__name">{{ prac.name }}</p>
+                    <div class="practitioner-option__badges">
+                      @for (s of prac.services.slice(0, 2); track s.id) {
+                        <span class="specialty-badge">{{ s.name }}</span>
+                      }
+                      @if (prac.services.length > 2) {
+                        <span class="specialty-badge">+{{ prac.services.length - 2 }}</span>
+                      }
+                    </div>
+                  </div>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Paso 3: Fecha y horario -->
+      @if (selectedPractitionerId()) {
+        <div class="booking-card">
+          <div class="step-header">
+            <span class="step-header__badge">
+              <mat-icon>event</mat-icon>
+            </span>
+            <div>
+              <p class="step-header__step">Paso 3</p>
+              <h2 class="step-header__title">Fecha y horario</h2>
+            </div>
+          </div>
+
+          <div class="datetime-grid">
+            <div>
+              <label class="subsection-label" for="booking-date">Fecha</label>
+              <input
+                id="booking-date"
+                type="date"
+                class="shadcn-input"
+                [min]="minDate"
+                [value]="selectedDate()"
+                (change)="onDateChange($event)"
+              />
+            </div>
+
+            <div>
+              <p class="subsection-label">Horario</p>
+              @if (!selectedDate()) {
+                <p class="muted-hint">
+                  Elige una fecha para ver los horarios disponibles.
+                </p>
+              } @else if (loadingSlots()) {
+                <p class="muted-hint">Cargando horarios disponibles...</p>
+              } @else if (slots().length === 0) {
+                <p class="muted-hint">
+                  No hay horarios disponibles ese día. Prueba con otra fecha.
+                </p>
+              } @else {
+                <div class="slots-grid">
+                  @for (slot of slots(); track slot.startTime) {
+                    <button
+                      type="button"
+                      class="slot-pill"
+                      [class.slot-pill--selected]="selectedSlot()?.startTime === slot.startTime"
+                      (click)="selectSlot(slot)"
+                    >
+                      {{ slot.label }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <button type="submit" class="btn-confirm" [disabled]="submitting()">
+        {{ submitting() ? 'Reservando...' : 'Confirmar turno' }}
+      </button>
+    </div>
+
+    <!-- Tarjeta resumen lateral -->
+    <aside class="booking-summary">
+      <div class="summary-card">
+        <div class="summary-card__top">
+          <div>
+            <p class="summary-card__eyebrow">Tu turno</p>
+            <p class="summary-card__title">{{ completedSteps() }}/4 pasos completos</p>
+          </div>
+          <div class="summary-card__progress">{{ progressPercent() }}%</div>
+        </div>
+
+        <div class="summary-card__list">
+          <div class="summary-step" [class.summary-step--done]="!!selectedService()">
+            <span class="summary-step__icon">
+              <mat-icon>{{ selectedService() ? 'check' : 'medical_services' }}</mat-icon>
+            </span>
+            <div class="summary-step__body">
+              <p class="summary-step__label">Servicio</p>
+              <p class="summary-step__val">{{ selectedService()?.name ?? 'Pendiente' }}</p>
+            </div>
+          </div>
+
+          <div class="summary-step" [class.summary-step--done]="!!selectedPractitioner()">
+            <span class="summary-step__icon">
+              <mat-icon>{{ selectedPractitioner() ? 'check' : 'person' }}</mat-icon>
+            </span>
+            <div class="summary-step__body">
+              <p class="summary-step__label">Odontólogo</p>
+              <p class="summary-step__val">{{ selectedPractitioner()?.name ?? 'Pendiente' }}</p>
+            </div>
+          </div>
+
+          <div class="summary-step" [class.summary-step--done]="!!selectedDate()">
+            <span class="summary-step__icon">
+              <mat-icon>{{ selectedDate() ? 'check' : 'event' }}</mat-icon>
+            </span>
+            <div class="summary-step__body">
+              <p class="summary-step__label">Fecha</p>
+              <p class="summary-step__val">{{ formatDateSummary(selectedDate()) }}</p>
+            </div>
+          </div>
+
+          <div class="summary-step" [class.summary-step--done]="!!selectedSlot()">
+            <span class="summary-step__icon">
+              <mat-icon>{{ selectedSlot() ? 'check' : 'schedule' }}</mat-icon>
+            </span>
+            <div class="summary-step__body">
+              <p class="summary-step__label">Horario</p>
+              <p class="summary-step__val">{{ selectedSlot()?.label ?? 'Pendiente' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </form>
+</div>

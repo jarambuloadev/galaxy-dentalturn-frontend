@@ -1,0 +1,39 @@
+<div class="confirmation-container">
+  <div class="confirmation-header">
+    <h1 class="confirmation-header__title">¡Turno reservado!</h1>
+    <p class="confirmation-header__subtitle">
+      Te esperamos en el consultorio. Guarda o anota los datos de tu turno.
+    </p>
+  </div>
+
+  @if (!loading() && appointment()) {
+    <div class="confirmation-card">
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Paciente</span>
+        <span class="confirmation-row__val">{{ appointment()!.patientName }}</span>
+      </div>
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Servicio</span>
+        <span class="confirmation-row__val">{{ appointment()!.serviceName }}</span>
+      </div>
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Odontólogo</span>
+        <span class="confirmation-row__val">{{ appointment()!.practitionerName }}</span>
+      </div>
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Fecha</span>
+        <span class="confirmation-row__val">{{ appointment()!.dateLabel }}</span>
+      </div>
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Horario</span>
+        <span class="confirmation-row__val">{{ appointment()!.timeLabel }}</span>
+      </div>
+      <div class="confirmation-row">
+        <span class="confirmation-row__label">Estado</span>
+        <span class="confirmation-row__val">Pendiente de confirmación</span>
+      </div>
+    </div>
+  }
+
+  <a routerLink="/reservar" class="btn-another">Reservar otro turno</a>
+</div>

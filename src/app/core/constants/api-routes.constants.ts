@@ -19,6 +19,12 @@ export const API_ROUTES = {
   BUSINESS_HOURS: {
     BASE: 'api/business-hours',
   },
+  APPOINTMENTS: {
+    BASE: 'api/appointments',
+    AVAILABILITY: 'api/appointments/availability',
+    GET_BY_ID: (id: number) => `api/appointments/${id}`,
+    UPDATE_STATUS: (id: number) => `api/appointments/${id}/status`,
+  },
   PATIENTS: {
     GET_ALL: 'users',
     GET_BY_ID: (id: number) => `users/${id}`,

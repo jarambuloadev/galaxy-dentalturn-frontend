@@ -1,0 +1,155 @@
+.appointments-page {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.page-head {
+  margin-bottom: 1.5rem;
+  &__title { margin: 0; font-size: 1.25rem; font-weight: 600; color: var(--foreground); }
+  &__subtitle { margin: 0.2rem 0 0; font-size: 0.875rem; color: var(--muted-foreground); }
+}
+
+.stats-grid {
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  @media (min-width: 640px) { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+
+  &__icon {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    color: #fff;
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+    &--blue { background: linear-gradient(135deg, #3b82f6, #4f46e5); }
+    &--sky { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+    &--violet { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    &--fuchsia { background: linear-gradient(135deg, #9333ea, #a21caf); }
+  }
+
+  &__label { margin: 0; font-size: 0.75rem; color: var(--muted-foreground); }
+  &__val { margin: 0.1rem 0 0; font-size: 1.35rem; font-weight: 600; color: var(--foreground); }
+}
+
+.shadcn-card {
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+}
+
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 150px;
+}
+
+.filter-label { font-size: 0.75rem; color: var(--muted-foreground); }
+
+.filter-control {
+  height: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--input);
+  background-color: var(--card);
+  padding: 0 0.625rem;
+  font-size: 0.85rem;
+  color: var(--foreground);
+  font-family: inherit;
+}
+
+.btn-clear {
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-lg);
+  border: none;
+  background-color: transparent;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  cursor: pointer;
+  &:hover { background-color: var(--muted); color: var(--foreground); }
+}
+
+.empty-msg { padding: 2.5rem 0; text-align: center; font-size: 0.875rem; color: var(--muted-foreground); margin: 0; }
+
+.table-wrapper { overflow-x: auto; border-top: 1px solid var(--border); margin: 0 -1rem; }
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--foreground);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+.font-medium { font-weight: 500; }
+.contact-cell { font-size: 0.8rem; color: var(--muted-foreground); }
+.text-right { text-align: right !important; }
+
+.status-badge {
+  display: inline-flex;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &[data-status='PENDING'] { background-color: #fef3c7; color: #b45309; }
+  &[data-status='CONFIRMED'] { background-color: #dbeafe; color: #1d4ed8; }
+  &[data-status='COMPLETED'] { background-color: #dcfce7; color: #15803d; }
+  &[data-status='CANCELLED'] { background-color: #fee2e2; color: #b91c1c; }
+}
+
+.row-actions { display: inline-flex; gap: 0.4rem; justify-content: flex-end; }
+
+.btn-sm {
+  height: 1.75rem;
+  padding: 0 0.65rem;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &--primary { background-color: var(--primary); color: var(--primary-foreground); }
+  &--danger { background-color: var(--destructive); color: #fff; }
+}
